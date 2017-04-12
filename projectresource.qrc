@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>images/diplom.jpeg</file>
+        <file>images/diplom2.jpeg</file>
+        <file>images/diplom3.gif</file>
+        <file>images/icon.jpeg</file>
+        <file>images/icon2.png</file>
+    </qresource>
+</RCC>
