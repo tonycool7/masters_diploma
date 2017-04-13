@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "mysqlsettings.h"
+#include "postgresqlsettings.h"
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +19,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+private slots:
+
 };
 
 #endif // MAINWINDOW_H

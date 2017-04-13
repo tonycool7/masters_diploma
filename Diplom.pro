@@ -27,3 +27,4 @@ FORMS    += mainwindow.ui \
 
 RESOURCES += \
     projectresource.qrc
+

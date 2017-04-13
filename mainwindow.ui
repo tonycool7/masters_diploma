@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>532</width>
-    <height>515</height>
+    <height>514</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -52,7 +52,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <property name="styleSheet">
@@ -76,7 +76,7 @@
            <property name="title">
             <string>Manual Backup</string>
            </property>
-           <widget class="QWidget" name="">
+           <widget class="QWidget" name="layoutWidget">
             <property name="geometry">
              <rect>
               <x>10</x>
@@ -102,7 +102,7 @@
              </item>
             </layout>
            </widget>
-           <widget class="QWidget" name="">
+           <widget class="QWidget" name="layoutWidget">
             <property name="geometry">
              <rect>
               <x>10</x>
@@ -199,12 +199,6 @@
              </item>
             </layout>
            </widget>
-           <zorder>groupBox_7</zorder>
-           <zorder>groupBox_7</zorder>
-           <zorder>groupBox_9</zorder>
-           <zorder>groupBox_9</zorder>
-           <zorder>layoutWidget_3</zorder>
-           <zorder>layoutWidget_4</zorder>
           </widget>
          </item>
          <item>
@@ -212,7 +206,7 @@
            <property name="title">
             <string>Log</string>
            </property>
-           <widget class="QWidget" name="">
+           <widget class="QWidget" name="layoutWidget">
             <property name="geometry">
              <rect>
               <x>10</x>
