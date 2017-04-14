@@ -909,7 +909,7 @@
      <item>
       <widget class="QPushButton" name="postgre_ok_btn">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="text">
         <string>Connect</string>

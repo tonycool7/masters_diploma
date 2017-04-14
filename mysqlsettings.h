@@ -15,9 +15,10 @@ class mysqlSettings : public QDialog
 public:
     explicit mysqlSettings(QWidget *parent = 0);
     ~mysqlSettings();
+    Ui::mysqlSettings *ui;
 
 private:
-    Ui::mysqlSettings *ui;
+
     parameters mysqlParameters;
 
 };
