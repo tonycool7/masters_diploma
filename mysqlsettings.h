@@ -2,6 +2,7 @@
 #define MYSQLSETTINGS_H
 
 #include <QDialog>
+#include "parameters.h"
 
 namespace Ui {
 class mysqlSettings;
@@ -17,6 +18,8 @@ public:
 
 private:
     Ui::mysqlSettings *ui;
+    parameters mysqlParameters;
+
 };
 
 #endif // MYSQLSETTINGS_H

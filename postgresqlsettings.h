@@ -2,6 +2,7 @@
 #define POSTGRESQLSETTINGS_H
 
 #include <QDialog>
+#include "parameters.h"
 
 namespace Ui {
 class postgresqlSettings;
@@ -17,6 +18,8 @@ public:
 
 private:
     Ui::postgresqlSettings *ui;
+    parameters postgreParameters;
+
 };
 
 #endif // POSTGRESQLSETTINGS_H

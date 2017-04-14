@@ -15,16 +15,24 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     mysqlsettings.cpp \
-    postgresqlsettings.cpp
+    postgresqlsettings.cpp \
+    databasemanager.cpp
 
 HEADERS  += mainwindow.h \
     mysqlsettings.h \
-    postgresqlsettings.h
+    postgresqlsettings.h \
+    parameters.h \
+    node.h \
+    databasemanager.h \
+    databasecontainer.h
 
 FORMS    += mainwindow.ui \
     mysqlsettings.ui \
-    postgresqlsettings.ui
+    postgresqlsettings.ui \
+    databasemanager.ui
 
 RESOURCES += \
     projectresource.qrc
+
+LIBS += -L"/usr/include/driver" -lmysqlcppconn
 
