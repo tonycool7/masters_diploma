@@ -10,6 +10,8 @@ mysqlSettings::mysqlSettings(QWidget *parent) :
     for(int i = 0; i < 4; i++){
         ui->mysql_timetable_tabwidget->setTabEnabled(i, false);
     }
+    DatabaseManager *db = new DatabaseManager();
+    connect(ui->mysql_ok_btn, SIGNAL(clicked()), db, SLOT(connectToMysqlServer()));
 }
 
 mysqlSettings::~mysqlSettings()

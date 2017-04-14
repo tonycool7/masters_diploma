@@ -75,9 +75,6 @@ void DatabaseManager::connectToMysqlServer(){
     }catch(sql::SQLException &e){
         qDebug() << "Error";
     }
-
-    qDebug() << "workiingr";
-
     show();
 }
 
