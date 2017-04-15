@@ -91,6 +91,9 @@
                <property name="text">
                 <string>Local backup</string>
                </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
               </widget>
              </item>
              <item>
@@ -188,6 +191,9 @@
                <property name="text">
                 <string>Local backup</string>
                </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
               </widget>
              </item>
              <item>
@@ -270,6 +276,9 @@
               <widget class="QRadioButton" name="postgre_man_localbkp_radio">
                <property name="text">
                 <string>Local backup</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -367,6 +376,9 @@
               <widget class="QRadioButton" name="postgre_auto_localbkp_radio">
                <property name="text">
                 <string>Local backup</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
                </property>
               </widget>
              </item>

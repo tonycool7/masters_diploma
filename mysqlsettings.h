@@ -17,6 +17,15 @@ public:
     explicit mysqlSettings(QWidget *parent = 0);
     ~mysqlSettings();
 
+signals:
+    void sendParameters(QString, QString, QString);
+    void testingParameters(QString, QString, QString);
+
+public slots:
+    void testingConnection();
+    void tryingToConnect();
+    void enableRemoteManaulBackup(bool value);
+    void enableRemoteAutomaticBackup(bool value);
 
 private:
     Ui::mysqlSettings *ui;

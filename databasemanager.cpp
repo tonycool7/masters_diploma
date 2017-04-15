@@ -15,6 +15,8 @@ DatabaseManager::DatabaseManager(QWidget *parent) :
     rootNode2 = standardModel2->invisibleRootItem();
     driver = sql::mysql::get_driver_instance();
 
+    mysql_msg = new QMessageBox(this);
+
     connect(ui->databaseView, SIGNAL(clicked(QModelIndex)), this, SLOT(echo(QModelIndex)));
     ui->databaseView->setModel(standardModel);
     ui->seletedView->setModel(standardModel2);
@@ -49,9 +51,19 @@ void DatabaseManager::displayDatabases()
     }
 }
 
-void DatabaseManager::connectToMysqlServer(){
+void DatabaseManager::testConnection(QString host, QString username, QString password)
+{
     try{
-        boost::scoped_ptr< sql::Connection > con(driver->connect("localhost", "root", "dlords"));
+        boost::scoped_ptr< sql::Connection > con(driver->connect(host.toStdString(), username.toStdString(), password.toStdString()));
+            mysql_msg->information(this, tr("Testing connection to MySQL server"),tr("Connection to MySQL server was successful"), QMessageBox::Cancel, QMessageBox::Cancel);
+    }catch(sql::SQLException &e){
+            mysql_msg->critical(this, tr("Testing connection to MySQL server"),tr("Connection to MySQL Server unsuccessful "), QMessageBox::Cancel, QMessageBox::Cancel);
+    }
+}
+
+void DatabaseManager::connectToMysqlServer(QString host, QString username, QString password){
+    try{
+        boost::scoped_ptr< sql::Connection > con(driver->connect(host.toStdString(), username.toStdString(), password.toStdString()));
         boost::scoped_ptr< sql::Statement > stmt(con->createStatement());
         boost::scoped_ptr< sql::ResultSet > res(stmt->executeQuery("show databases"));
         container = new databasecontainer<QString>();
@@ -81,14 +93,14 @@ void DatabaseManager::connectToMysqlServer(){
 void DatabaseManager::echo(const QModelIndex &index)
 {
     QModelIndexList id = standardModel2->match(standardModel2->index(0, 0),Qt::DisplayRole,QVariant::fromValue(index.data()),2, Qt::MatchRecursive);
-
+    QModelIndexList id2 = standardModel2->match(standardModel2->index(0, 0),Qt::DisplayRole,QVariant::fromValue(index.parent().data()),2, Qt::MatchRecursive);
     if(standardModel->itemFromIndex(index)->checkState() == Qt::Checked && id.empty()){
         QStandardItem *selected = new QStandardItem(index.data().toString());
         if(index.parent().data() != "MySQL Databases"){
-            QModelIndexList id2 = standardModel2->match(standardModel2->index(0, 0),Qt::DisplayRole,QVariant::fromValue(index.parent().data()),2, Qt::MatchRecursive);
             if(!id2.empty()){
                 rootNode2->child(id2.value(0).row(),0)->appendRow(selected);
             }else{
+                standardModel->itemFromIndex(index)->parent()->setCheckState(Qt::Checked);
                 QStandardItem *selectedParent = new QStandardItem(index.parent().data().toString());
                 rootNode2->appendRow(selectedParent);
                 selectedParent->appendRow(selected);
@@ -98,9 +110,16 @@ void DatabaseManager::echo(const QModelIndex &index)
         }
     }else{
         if(standardModel->itemFromIndex(index)->checkState() == Qt::Unchecked){
-            rootNode2->removeRow(id.value(0).row());
+            if(rootNode2->rowCount() == 0){
+               rootNode2->removeRow(id.value(0).row());
+            }else{
+                if(!id2.empty()){
+                    rootNode2->child(id2.value(0).row(),0)->removeRow(id.value(0).row());
+                }else{
+                    rootNode2->removeRow(id.value(0).row());
+                }
+            }
         }
     }
 
 }
-

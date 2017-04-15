@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QTreeView>
+#include <QMessageBox>
 #include <QStandardItemModel>
 #include <QItemSelectionModel>
 #include <QCheckBox>
@@ -40,11 +41,14 @@ private:
     QStandardItem *rootNode2;
     databasecontainer<QString> *container;
     node<QString> *head;
+    QMessageBox *mysql_msg;
 
 private slots:
-    void connectToMysqlServer();
+    void connectToMysqlServer(QString host, QString username, QString password);
+    void testConnection(QString host, QString username, QString password);
     void echo(const QModelIndex &index);
 
 };
+
 
 #endif // DATABASEMANAGER_H

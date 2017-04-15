@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>443</width>
-    <height>672</height>
+    <width>841</width>
+    <height>550</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Configuration    </string>
+        <string>Configuration name </string>
        </property>
       </widget>
      </item>
@@ -65,7 +65,7 @@
         </rect>
        </property>
        <property name="title">
-        <string>From</string>
+        <string>From(PostgreSQL Server)</string>
        </property>
        <widget class="QLabel" name="label_8">
         <property name="geometry">
@@ -276,7 +276,7 @@
           <x>9</x>
           <y>169</y>
           <width>381</width>
-          <height>24</height>
+          <height>33</height>
          </rect>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -309,19 +309,19 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>230</y>
-         <width>401</width>
-         <height>111</height>
+         <x>420</x>
+         <y>10</y>
+         <width>381</width>
+         <height>201</height>
         </rect>
        </property>
        <property name="title">
-        <string>Destination</string>
+        <string>Destination(SSH Server)</string>
        </property>
        <widget class="QLabel" name="label_10">
         <property name="geometry">
          <rect>
-          <x>309</x>
+          <x>290</x>
           <y>34</y>
           <width>31</width>
           <height>16</height>
@@ -331,12 +331,12 @@
          <string>Port</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="mysql_host_2">
+       <widget class="QLineEdit" name="postgre_backup_ip">
         <property name="geometry">
          <rect>
-          <x>98</x>
+          <x>90</x>
           <y>31</y>
-          <width>201</width>
+          <width>191</width>
           <height>22</height>
          </rect>
         </property>
@@ -376,7 +376,7 @@
        <widget class="QLineEdit" name="mysql_port_2">
         <property name="geometry">
          <rect>
-          <x>339</x>
+          <x>320</x>
           <y>31</y>
           <width>51</width>
           <height>22</height>
@@ -386,7 +386,7 @@
        <widget class="QLabel" name="label_14">
         <property name="geometry">
          <rect>
-          <x>99</x>
+          <x>90</x>
           <y>49</y>
           <width>180</width>
           <height>20</height>
@@ -405,8 +405,8 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>70</y>
-          <width>381</width>
+          <y>168</y>
+          <width>361</width>
           <height>24</height>
          </rect>
         </property>
@@ -425,7 +425,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="mysql_test_connection_btn_2">
+          <widget class="QPushButton" name="postgre_backup_test_btn">
            <property name="text">
             <string>Test Connection</string>
            </property>
@@ -433,15 +433,97 @@
          </item>
         </layout>
        </widget>
+       <widget class="QLabel" name="label_9">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>83</y>
+          <width>71</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Username</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_11">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>132</y>
+          <width>71</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Password</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="postgre_backup_username">
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>80</y>
+          <width>191</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="postgre_backup_password">
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>130</y>
+          <width>191</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_12">
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>100</y>
+          <width>231</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Backup server/SSH server username</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_15">
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>150</y>
+          <width>221</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Backup server/SSH server password</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="postgre_timetable">
        <property name="enabled">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>350</y>
+         <y>220</y>
          <width>401</width>
          <height>181</height>
         </rect>
@@ -451,7 +533,7 @@
        </property>
        <widget class="QTabWidget" name="postgre_timetable_tabwidget">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="geometry">
          <rect>

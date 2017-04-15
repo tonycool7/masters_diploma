@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "parameters.h"
+#include "databasemanager.h"
 
 namespace Ui {
 class postgresqlSettings;
@@ -15,6 +16,14 @@ class postgresqlSettings : public QDialog
 public:
     explicit postgresqlSettings(QWidget *parent = 0);
     ~postgresqlSettings();
+
+signals:
+    void sendParameters(QString, QString, QString);
+
+public slots:
+    void tryingToConnect();
+    void enableRemoteManaulBackup(bool value);
+    void enableRemoteAutomaticBackup(bool value);
 
 private:
     Ui::postgresqlSettings *ui;
