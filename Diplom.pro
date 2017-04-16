@@ -36,3 +36,5 @@ RESOURCES += \
 
 LIBS += -L"/usr/include/driver" -lmysqlcppconn
 
+LIBS += -L"/usr/lib" -lssh
+

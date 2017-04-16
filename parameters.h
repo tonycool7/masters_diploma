@@ -10,6 +10,10 @@ public:
     QString configFilename;
     QString port;
     QString ipAddress;
+    QString sshIp;
+    QString sshUsername;
+    QString sshPort;
+    QString sshPassword;
     QString destinationPort;
     QString time;
     QString day;

@@ -339,7 +339,7 @@
          <string>Port</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="backup_ip">
+       <widget class="QLineEdit" name="mysql_backup_ip">
         <property name="geometry">
          <rect>
           <x>98</x>
@@ -441,7 +441,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QLineEdit" name="backup_username">
+       <widget class="QLineEdit" name="mysql_backup_username">
         <property name="geometry">
          <rect>
           <x>100</x>
@@ -451,7 +451,7 @@
          </rect>
         </property>
        </widget>
-       <widget class="QLineEdit" name="backup_password">
+       <widget class="QLineEdit" name="mysql_backup_password">
         <property name="geometry">
          <rect>
           <x>100</x>
@@ -497,7 +497,7 @@
          <string>Backup server/SSH server password</string>
         </property>
        </widget>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -529,7 +529,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -1029,10 +1029,6 @@
         </layout>
        </widget>
       </widget>
-      <zorder>groupBox</zorder>
-      <zorder>mysql_destination_details</zorder>
-      <zorder>mysql_timetable</zorder>
-      <zorder>mysql_timetable_tabwidget</zorder>
      </widget>
     </widget>
    </item>
