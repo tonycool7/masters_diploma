@@ -15,11 +15,14 @@
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
 #include "databasecontainer.h"
+#include <QFile>
+#include <QProcess>
+#include <QTextStream>
 
 using namespace std;
 
 namespace Ui {
-class DatabaseManager;
+    class DatabaseManager;
 }
 
 class DatabaseManager : public QDialog
@@ -30,6 +33,13 @@ public:
     explicit DatabaseManager(QWidget *parent = 0);
     void displayDatabases();
     ~DatabaseManager();
+    void setMysqlUsername(QString username);
+    void setMysqlPassword(QString password);
+    void setMysqlHost(QString host);
+    QString getMysqlUsername();
+    QString getMysqlPassword();
+    QString getMysqlHost();
+    QStringList databaseList;
 
 private:
     Ui::DatabaseManager *ui;
@@ -42,11 +52,15 @@ private:
     databasecontainer<QString> *container;
     node<QString> *head;
     QMessageBox *mysql_msg;
+    QString mysql_host;
+    QString mysql_password;
+    QString mysql_username;
 
 private slots:
     void connectToMysqlServer(QString host, QString username, QString password);
     void testConnection(QString host, QString username, QString password);
     void echo(const QModelIndex &index);
+    void backupDatabases();
 
 };
 

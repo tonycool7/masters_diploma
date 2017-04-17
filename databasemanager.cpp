@@ -18,6 +18,7 @@ DatabaseManager::DatabaseManager(QWidget *parent) :
     mysql_msg = new QMessageBox(this);
 
     connect(ui->databaseView, SIGNAL(clicked(QModelIndex)), this, SLOT(echo(QModelIndex)));
+    connect(ui->backup_btn, SIGNAL(clicked()), this, SLOT(backupDatabases()));
     ui->databaseView->setModel(standardModel);
     ui->seletedView->setModel(standardModel2);
 }
@@ -25,6 +26,36 @@ DatabaseManager::DatabaseManager(QWidget *parent) :
 DatabaseManager::~DatabaseManager()
 {
     delete ui;
+}
+
+void DatabaseManager::setMysqlUsername(QString username)
+{
+    mysql_username = username;
+}
+
+void DatabaseManager::setMysqlPassword(QString password)
+{
+    mysql_password = password;
+}
+
+void DatabaseManager::setMysqlHost(QString host)
+{
+    mysql_host = host;
+}
+
+QString DatabaseManager::getMysqlUsername()
+{
+    return mysql_username;
+}
+
+QString DatabaseManager::getMysqlPassword()
+{
+    return mysql_password;
+}
+
+QString DatabaseManager::getMysqlHost()
+{
+    return mysql_host;
 }
 
 void DatabaseManager::displayDatabases()
@@ -55,13 +86,18 @@ void DatabaseManager::testConnection(QString host, QString username, QString pas
 {
     try{
         boost::scoped_ptr< sql::Connection > con(driver->connect(host.toStdString(), username.toStdString(), password.toStdString()));
-            mysql_msg->information(this, tr("Testing connection to MySQL server"),tr("Connection to MySQL server was successful"), QMessageBox::Cancel, QMessageBox::Cancel);
+            mysql_msg->information(this, tr("Testing connection to MySQL server"),tr("Connection to MySQL server was successful"), mysql_msg->Cancel, mysql_msg->Cancel);
     }catch(sql::SQLException &e){
-            mysql_msg->critical(this, tr("Testing connection to MySQL server"),tr("Connection to MySQL Server unsuccessful "), QMessageBox::Cancel, QMessageBox::Cancel);
+            mysql_msg->critical(this, tr("Testing connection to MySQL server"),tr("Connection to MySQL Server unsuccessful "), mysql_msg->Cancel, mysql_msg->Cancel);
     }
 }
 
 void DatabaseManager::connectToMysqlServer(QString host, QString username, QString password){
+
+    setMysqlHost(host);
+    setMysqlPassword(password);
+    setMysqlUsername(username);
+
     try{
         boost::scoped_ptr< sql::Connection > con(driver->connect(host.toStdString(), username.toStdString(), password.toStdString()));
         boost::scoped_ptr< sql::Statement > stmt(con->createStatement());
@@ -122,4 +158,20 @@ void DatabaseManager::echo(const QModelIndex &index)
         }
     }
 
+}
+
+void DatabaseManager::backupDatabases()
+{
+    QString filename="createDump.sh";
+    QFile file(filename);
+    QProcess *createDump = new QProcess();
+    if(file.open(QIODevice::WriteOnly | QIODevice::Text)){
+    QTextStream out(&file);
+    out << "#!/bin/sh\n";
+    out << "mysqldump -h"<<getMysqlHost()<<" -u"<<getMysqlUsername()<<" -p"<<getMysqlPassword()<<" diploma > dump.sql";
+    file.close();
+    }
+
+    createDump->start("/bin/sh" , QStringList() <<"createDump.sh");
+    mysql_msg->information(this, tr("Backup Alert"), tr("Backup was successfull!"),mysql_msg->Cancel, mysql_msg->Cancel);
 }

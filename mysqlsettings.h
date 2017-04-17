@@ -4,8 +4,8 @@
 #include <QDialog>
 #include "parameters.h"
 #include "databasemanager.h"
-#include <QFile>
 #include <libssh/libssh.h>
+#include <QFile>
 #include <QProcess>
 #include <QTextStream>
 #include <QMessageBox>
@@ -20,6 +20,8 @@ class mysqlSettings : public QDialog
 
 public:
     explicit mysqlSettings(QWidget *parent = 0);
+    void setMysqlConnectParameters(QString host,QString username ,QString password, QString port);
+    parameters getMysqlParameters();
     ~mysqlSettings();
 
 signals:

@@ -102,17 +102,17 @@ void mysqlSettings::createDump()
 
 void mysqlSettings::sendBackupToRemoteSSHServer(QString host,QString username ,QString password)
 {
-        QString filename="send.sh";
-        QFile file(filename);
-        QProcess *send = new QProcess();
-        if(file.open(QIODevice::WriteOnly | QIODevice::Text)){
-        QTextStream out(&file);
-        out << "#!/bin/sh\n";
-        out << "sshpass -p"<<password<<" scp dump.sql "<<username<<"@"<<host<<":/backup/" ;
-        file.close();
-        }
+    QString filename="send.sh";
+    QFile file(filename);
+    QProcess *send = new QProcess();
+    if(file.open(QIODevice::WriteOnly | QIODevice::Text)){
+    QTextStream out(&file);
+    out << "#!/bin/sh\n";
+    out << "sshpass -p"<<password<<" scp dump.sql "<<username<<"@"<<host<<":/backup/" ;
+    file.close();
+    }
 
-        send->start("/bin/sh" , QStringList() <<"send.sh");
+    send->start("/bin/sh" , QStringList() <<"send.sh");
 }
 
 void mysqlSettings::enableRemoteManaulBackup(bool value)
