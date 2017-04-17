@@ -32,7 +32,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QRadioButton" name="radioButton">
+    <widget class="QCheckBox" name="postgre_dynamic_configNaming">
      <property name="text">
       <string>Dynamic configuration naming</string>
      </property>

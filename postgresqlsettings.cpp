@@ -12,6 +12,8 @@ postgresqlSettings::postgresqlSettings(QWidget *parent) :
     }
     DatabaseManager *db = new DatabaseManager();
 
+    connect(ui->postgre_dynamic_configNaming, SIGNAL(toggled(bool)), ui->postgre_configuration_name, SLOT(setDisabled(bool)));
+
     connect(ui->postgre_ok_btn, SIGNAL(clicked()), this, SLOT(tryingToConnect()));
     //connect(this, SIGNAL(sendParameters(QString,QString,QString)), db, SLOT(connectToMysqlServer(QString ,QString ,QString )));
 }

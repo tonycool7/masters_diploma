@@ -120,10 +120,12 @@ void DatabaseManager::connectToMysqlServer(QString host, QString username, QStri
             ui->label->setText("connection successfull!");
             displayDatabases();
         }
+        show();
     }catch(sql::SQLException &e){
         qDebug() << "Error";
+        mysql_msg->critical(this, tr("Mysql Connection"), tr("Unable to connect"), mysql_msg->Cancel, mysql_msg->Cancel);
     }
-    show();
+
 }
 
 void DatabaseManager::echo(const QModelIndex &index)

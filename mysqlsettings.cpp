@@ -12,6 +12,7 @@ mysqlSettings::mysqlSettings(QWidget *parent) :
     }
     DatabaseManager *db = new DatabaseManager();
 
+    connect(ui->mysql_dynamic_naming, SIGNAL(toggled(bool)), ui->mysql_configuration_name, SLOT(setDisabled(bool)));
 
     connect(ui->mysql_cancel_btn, SIGNAL(clicked()), this, SLOT(close()));
     connect(ui->mysql_ok_btn, SIGNAL(clicked()), this, SLOT(tryingToConnect()));
@@ -55,9 +56,6 @@ void mysqlSettings::testingSSHConnection(QString host,QString username ,QString 
     if (my_ssh_session == NULL)
       exit(-1);
 
-    qDebug() << host;
-    qDebug() << username;
-    qDebug() << password;
     ssh_options_set(my_ssh_session, SSH_OPTIONS_HOST, host.toStdString().c_str());
     ssh_options_set(my_ssh_session, SSH_OPTIONS_USER, username.toStdString().c_str());
     ssh_options_set(my_ssh_session, SSH_OPTIONS_LOG_VERBOSITY, &verbosity);

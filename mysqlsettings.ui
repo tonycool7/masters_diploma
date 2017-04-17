@@ -35,14 +35,21 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="configuration_name"/>
+      <widget class="QLineEdit" name="mysql_configuration_name">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QRadioButton" name="radioButton">
+    <widget class="QCheckBox" name="mysql_dynamic_naming">
      <property name="text">
-      <string>dynamic configuration naming</string>
+      <string>Dynamic configuration naming</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
      </property>
     </widget>
    </item>
