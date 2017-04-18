@@ -4,11 +4,7 @@
 #include <QDialog>
 #include "parameters.h"
 #include "databasemanager.h"
-#include <libssh/libssh.h>
-#include <QFile>
-#include <QProcess>
-#include <QTextStream>
-#include <QMessageBox>
+#include "sshmanager.h"
 
 namespace Ui {
 class mysqlSettings;
@@ -20,7 +16,6 @@ class mysqlSettings : public QDialog
 
 public:
     explicit mysqlSettings(QWidget *parent = 0);
-    void setMysqlConnectParameters(QString host,QString username ,QString password, QString port);
     parameters getMysqlParameters();
     ~mysqlSettings();
 
@@ -32,19 +27,17 @@ signals:
 
 public slots:
     void testingConnection();
-    void testingSSHConnectionSignal();
-    void testingSSHConnection(QString, QString, QString);
+    void emitSSHConnectionSignal();
     void tryingToConnect();
-    void tryingToConnectSSH();
     void enableRemoteManaulBackup(bool value);
     void enableRemoteAutomaticBackup(bool value);
-    void sendBackupToRemoteSSHServer(QString host,QString username ,QString password);
     void createDump();
 
 private:
     Ui::mysqlSettings *ui;
     parameters mysqlParameters;
     QMessageBox *msg;
+    sshManager *ssh;
 
 };
 

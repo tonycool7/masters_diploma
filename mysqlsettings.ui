@@ -626,92 +626,6 @@
           </layout>
          </widget>
         </widget>
-        <widget class="QWidget" name="tab_3">
-         <attribute name="title">
-          <string>Weekly</string>
-         </attribute>
-         <widget class="QWidget" name="layoutWidget">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>20</y>
-            <width>291</width>
-            <height>47</height>
-           </rect>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_7">
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_3">
-             <item>
-              <widget class="QLabel" name="label_11">
-               <property name="text">
-                <string>Select day</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QComboBox" name="comboBox">
-               <item>
-                <property name="text">
-                 <string>Понедельник</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Вторник</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Среда</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Четверг</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Пятница</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Суббота</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Воскресенье</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string/>
-                </property>
-               </item>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_4">
-             <item>
-              <widget class="QLabel" name="label_12">
-               <property name="text">
-                <string>Set time</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QTimeEdit" name="timeEdit_2"/>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-        </widget>
         <widget class="QWidget" name="tab_4">
          <attribute name="title">
           <string>Monthly</string>
@@ -827,6 +741,92 @@
              </item>
              <item>
               <widget class="QTimeEdit" name="timeEdit_3"/>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="tab_3">
+         <attribute name="title">
+          <string>Weekly</string>
+         </attribute>
+         <widget class="QWidget" name="layoutWidget">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>20</y>
+            <width>291</width>
+            <height>47</height>
+           </rect>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <item>
+              <widget class="QLabel" name="label_11">
+               <property name="text">
+                <string>Select day</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="comboBox">
+               <item>
+                <property name="text">
+                 <string>Понедельник</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Вторник</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Среда</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Четверг</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Пятница</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Суббота</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Воскресенье</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string/>
+                </property>
+               </item>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_4">
+             <item>
+              <widget class="QLabel" name="label_12">
+               <property name="text">
+                <string>Set time</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QTimeEdit" name="timeEdit_2"/>
              </item>
             </layout>
            </item>
@@ -1078,6 +1078,37 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>mysql_configuration_name</tabstop>
+  <tabstop>mysql_dynamic_naming</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>mysql_host</tabstop>
+  <tabstop>mysql_port</tabstop>
+  <tabstop>mysql_username</tabstop>
+  <tabstop>mysql_password</tabstop>
+  <tabstop>mysql_test_connection_btn</tabstop>
+  <tabstop>mysql_backup_ip</tabstop>
+  <tabstop>mysql_port_2</tabstop>
+  <tabstop>mysql_backup_username</tabstop>
+  <tabstop>mysql_backup_password</tabstop>
+  <tabstop>mysql_ssh_testConnection_btn</tabstop>
+  <tabstop>radioButton_2</tabstop>
+  <tabstop>radioButton_3</tabstop>
+  <tabstop>radioButton_4</tabstop>
+  <tabstop>radioButton_5</tabstop>
+  <tabstop>mysql_timetable_tabwidget</tabstop>
+  <tabstop>timeEdit</tabstop>
+  <tabstop>comboBox_4</tabstop>
+  <tabstop>comboBox_2</tabstop>
+  <tabstop>timeEdit_3</tabstop>
+  <tabstop>comboBox</tabstop>
+  <tabstop>timeEdit_2</tabstop>
+  <tabstop>comboBox_3</tabstop>
+  <tabstop>comboBox_6</tabstop>
+  <tabstop>timeEdit_4</tabstop>
+  <tabstop>mysql_ok_btn</tabstop>
+  <tabstop>mysql_cancel_btn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

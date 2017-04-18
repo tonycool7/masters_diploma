@@ -2,6 +2,7 @@
 #define DATABASEMANAGER_H
 
 #include <QDialog>
+#include <iostream>
 #include <QTreeView>
 #include <QMessageBox>
 #include <QStandardItemModel>
@@ -10,11 +11,14 @@
 #include <boost/scoped_ptr.hpp>
 #include <driver/mysql_public_iface.h>
 #include <mysql_connection.h>
+#include <stdlib.h>
 #include <cppconn/driver.h>
 #include <cppconn/exception.h>
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
 #include "databasecontainer.h"
+#include <signal.h>
+#include <pqxx/pqxx>
 #include <QFile>
 #include <QProcess>
 #include <QTextStream>
@@ -31,35 +35,38 @@ class DatabaseManager : public QDialog
 
 public:
     explicit DatabaseManager(QWidget *parent = 0);
-    void displayDatabases();
+    void displayDatabases(node<QString> *head);
     ~DatabaseManager();
-    void setMysqlUsername(QString username);
-    void setMysqlPassword(QString password);
-    void setMysqlHost(QString host);
-    QString getMysqlUsername();
-    QString getMysqlPassword();
-    QString getMysqlHost();
+    void setUsername(QString username);
+    void setPassword(QString password);
+    void setHost(QString host);
+    QString getUsername();
+    QString getPassword();
+    QString getHost();
     QStringList databaseList;
 
 private:
     Ui::DatabaseManager *ui;
     QString msg;
     sql::Driver * driver;
-    QStandardItemModel *standardModel;
-    QStandardItem *rootNode;
-    QStandardItemModel *standardModel2;
-    QStandardItem *rootNode2;
-    databasecontainer<QString> *container;
-    node<QString> *head;
+    QStandardItemModel *StandardModel;
+    QStandardItem *ContainerRootNode;
+    QStandardItemModel *StandardModel2;
+    QStandardItem *ContainerRootNode2;
+    databasecontainer<QString> *mysqlContainer;
+    databasecontainer<QString> *PostgreSQLContainer;
+    node<QString> *containerHead;
     QMessageBox *mysql_msg;
-    QString mysql_host;
-    QString mysql_password;
-    QString mysql_username;
+    QString host;
+    QString password;
+    QString username;
 
 private slots:
     void connectToMysqlServer(QString host, QString username, QString password);
-    void testConnection(QString host, QString username, QString password);
-    void echo(const QModelIndex &index);
+    void testMysqlConnection(QString host, QString username, QString password);
+    void connectToPostgreSQLServer(QString host, QString username, QString password);
+    void testPostgreSQLConnection(QString host, QString username, QString password);
+    void displayMysqlDatabaseSelections(const QModelIndex &index);
     void backupDatabases();
 
 };

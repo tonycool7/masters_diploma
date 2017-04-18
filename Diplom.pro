@@ -16,7 +16,8 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     mysqlsettings.cpp \
     postgresqlsettings.cpp \
-    databasemanager.cpp
+    databasemanager.cpp \
+    sshmanager.cpp
 
 HEADERS  += mainwindow.h \
     mysqlsettings.h \
@@ -24,7 +25,8 @@ HEADERS  += mainwindow.h \
     parameters.h \
     node.h \
     databasemanager.h \
-    databasecontainer.h
+    databasecontainer.h \
+    sshmanager.h
 
 FORMS    += mainwindow.ui \
     mysqlsettings.ui \
@@ -37,4 +39,8 @@ RESOURCES += \
 LIBS += -L"/usr/include/driver" -lmysqlcppconn
 
 LIBS += -L"/usr/lib" -lssh
+
+LIBS += -L"/usr/lib" -lpqxx
+
+LIBS += -L"/usr/lib" -lpq
 

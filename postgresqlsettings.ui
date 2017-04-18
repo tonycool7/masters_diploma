@@ -1025,6 +1025,37 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>postgre_configuration_name</tabstop>
+  <tabstop>postgre_dynamic_configNaming</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>postgre_host</tabstop>
+  <tabstop>postgre_port</tabstop>
+  <tabstop>postgre_username</tabstop>
+  <tabstop>postgre_password</tabstop>
+  <tabstop>postgre_test_connection_btn</tabstop>
+  <tabstop>postgre_backup_ip</tabstop>
+  <tabstop>mysql_port_2</tabstop>
+  <tabstop>postgre_backup_username</tabstop>
+  <tabstop>postgre_backup_password</tabstop>
+  <tabstop>postgre_backup_test_btn</tabstop>
+  <tabstop>radioButton_6</tabstop>
+  <tabstop>radioButton_7</tabstop>
+  <tabstop>radioButton_8</tabstop>
+  <tabstop>radioButton_9</tabstop>
+  <tabstop>postgre_timetable_tabwidget</tabstop>
+  <tabstop>timeEdit_5</tabstop>
+  <tabstop>comboBox_5</tabstop>
+  <tabstop>timeEdit_6</tabstop>
+  <tabstop>comboBox_7</tabstop>
+  <tabstop>comboBox_8</tabstop>
+  <tabstop>timeEdit_7</tabstop>
+  <tabstop>comboBox_9</tabstop>
+  <tabstop>comboBox_10</tabstop>
+  <tabstop>timeEdit_8</tabstop>
+  <tabstop>postgre_ok_btn</tabstop>
+  <tabstop>postgre_cancel_btn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
