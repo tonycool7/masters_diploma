@@ -264,6 +264,13 @@
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
+          <widget class="QPushButton" name="loadDefualt">
+           <property name="text">
+            <string>load default</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <spacer name="horizontalSpacer_4">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>

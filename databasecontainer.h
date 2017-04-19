@@ -17,7 +17,9 @@ public:
     node<containerType> *createNewNode(containerType data, QVector<containerType> table);
     node<containerType> *top();
     void displayDatabaseContainer();
-    void searchAndSelect(QString &data);
+    bool searchForDb(QString data);
+    QString returnOnlyDatabasesFromContainer();
+    int size;
 };
 
 template<typename containerType>
@@ -26,12 +28,30 @@ databasecontainer<containerType>::databasecontainer()
     root = NULL;
 }
 
+
+template<typename containerType>
+QString databasecontainer<containerType>::returnOnlyDatabasesFromContainer(){
+    node<containerType> *temp;
+    temp = top();
+
+    QString result = "";
+    while(temp != NULL){
+        if(temp->tables.empty()){
+            result += " "+temp->dbname;
+        }
+        temp = temp->next;
+    }
+    return result;
+}
+
+
 template<typename containerType>
 void databasecontainer<containerType>::populateDbContainer(containerType data, QVector<containerType> tables)
 {
     node<containerType> *temp = createNewNode(data, tables);
     if(root == NULL){
         root = temp;
+        size = 0;
     }else{
         node<containerType> *cur = root;
         while(cur->next != NULL){
@@ -39,6 +59,8 @@ void databasecontainer<containerType>::populateDbContainer(containerType data, Q
         }
         cur->next = temp;
     }
+
+    size++;
 }
 
 
@@ -76,19 +98,19 @@ void databasecontainer<containerType>::displayDatabaseContainer()
 
 
 template<typename containerType>
-void databasecontainer<containerType>::searchAndSelect(QString &data)
+bool databasecontainer<containerType>::searchForDb(QString data)
 {
     node<containerType> *temp;
     temp = top();
 
     while(temp != NULL){
-        qDebug() << temp->dbname;
-        QVector<QString>::iterator it;
-        for(it = temp->tables.begin(); it != temp->tables.end(); it++){
-            qDebug() <<"-"<< *it;
+        if(temp->dbname == data){
+            return true;
         }
         temp = temp->next;
     }
+
+    return false;
 }
 
 

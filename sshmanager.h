@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QDialog>
+#include <QDebug>
 #include <libssh/libssh.h>
 #include <QMessageBox>
 #include <QFile>

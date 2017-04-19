@@ -24,6 +24,7 @@ signals:
     void testingParameters(QString, QString, QString);
     void sendSSHParameters(QString, QString, QString);
     void testingSSHParameters();
+    void storeInMySQLRemoteBackupFolder(bool);
 
 public slots:
     void testingConnection();
@@ -32,6 +33,7 @@ public slots:
     void enableRemoteManaulBackup(bool value);
     void enableRemoteAutomaticBackup(bool value);
     void createDump();
+    void loadDefault();
 
 private:
     Ui::mysqlSettings *ui;

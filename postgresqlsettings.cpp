@@ -14,6 +14,8 @@ postgresqlSettings::postgresqlSettings(QWidget *parent) :
     DatabaseManager *db = new DatabaseManager();
     ssh = new sshManager();
 
+    connect(ui->loadDefault, SIGNAL(clicked()), this, SLOT(loadDefault()));
+
     connect(ui->postgre_dynamic_configNaming, SIGNAL(toggled(bool)), ui->postgre_configuration_name, SLOT(setDisabled(bool)));
     connect(ui->postgre_ok_btn, SIGNAL(clicked()), this, SLOT(tryingToConnect()));
     connect(this, SIGNAL(sendParameters(QString,QString,QString)), db, SLOT(connectToPostgreSQLServer(QString,QString,QString)));
@@ -37,6 +39,13 @@ void postgresqlSettings::testingConnection()
     postgreParameters.username = ui->postgre_username->text();
     postgreParameters.password = ui->postgre_password->text();
     emit testingParameters(postgreParameters.ipAddress, postgreParameters.username, postgreParameters.password);
+}
+
+void postgresqlSettings::loadDefault()
+{
+    ui->postgre_host->setText("192.168.1.224");
+    ui->postgre_username->setText("root");
+    ui->postgre_password->setText("dlords");
 }
 
 void postgresqlSettings::tryingToConnect()

@@ -26,6 +26,7 @@ signals:
 
 public slots:
     void testingConnection();
+    void loadDefault();
     void tryingToConnect();
     void enableRemoteManaulBackup(bool value);
     void enableRemoteAutomaticBackup(bool value);

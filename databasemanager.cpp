@@ -9,13 +9,14 @@ DatabaseManager::DatabaseManager(QWidget *parent) :
     StandardModel = new QStandardItemModel;
     StandardModel2 = new QStandardItemModel;
     driver = sql::mysql::get_driver_instance();
-
     mysql_msg = new QMessageBox(this);
 
-    connect(ui->databaseView, SIGNAL(clicked(QModelIndex)), this, SLOT(displayMysqlDatabaseSelections(QModelIndex)));
+    connect(ui->databaseView, SIGNAL(clicked(QModelIndex)), this, SLOT(displayDatabaseSelections(QModelIndex)));
     connect(ui->backup_btn, SIGNAL(clicked()), this, SLOT(backupDatabases()));
     ui->databaseView->setModel(StandardModel);
     ui->seletedView->setModel(StandardModel2);
+
+    mysql_remote_backup = false;
 }
 
 DatabaseManager::~DatabaseManager()
@@ -23,19 +24,19 @@ DatabaseManager::~DatabaseManager()
     delete ui;
 }
 
-void DatabaseManager::setUsername(QString username)
+void DatabaseManager::setUsername(QString username_val)
 {
-    username = username;
+    username = username_val;
 }
 
-void DatabaseManager::setPassword(QString password)
+void DatabaseManager::setPassword(QString password_val)
 {
-    password = password;
+    password = password_val;
 }
 
-void DatabaseManager::setHost(QString host)
+void DatabaseManager::setHost(QString host_val)
 {
-    host = host;
+    host = host_val;
 }
 
 QString DatabaseManager::getUsername()
@@ -62,6 +63,7 @@ void DatabaseManager::displayDatabases(node<QString> *head)
     QVector<QString> tables;
     QStandardItem *mysql = new QStandardItem("Databases");
     ContainerRootNode->appendRow(mysql);
+
     while(head != NULL){
         QStandardItem *item = new QStandardItem(head->dbname);
         mysql->appendRow(item);
@@ -119,7 +121,6 @@ void DatabaseManager::connectToPostgreSQLServer(QString host, QString username, 
         qDebug() << e.what();
         mysql_msg->critical(this, tr("PostgreSQL Connection"), tr("Unable to connect"), mysql_msg->Cancel, mysql_msg->Cancel);
     }
-
 }
 
 void DatabaseManager::testPostgreSQLConnection(QString host, QString username, QString password)
@@ -130,7 +131,6 @@ void DatabaseManager::testPostgreSQLConnection(QString host, QString username, Q
     }catch(const pqxx::sql_error &e){
         mysql_msg->critical(this, tr("Testing connection to postgreSQL server"),tr("Connection to postgreSQL Server unsuccessful "), mysql_msg->Cancel, mysql_msg->Cancel);
     }
-
 }
 
 void DatabaseManager::connectToMysqlServer(QString host, QString username, QString password){
@@ -165,16 +165,15 @@ void DatabaseManager::connectToMysqlServer(QString host, QString username, QStri
         qDebug() << "Error";
         mysql_msg->critical(this, tr("Mysql Connection"), tr("Unable to connect"), mysql_msg->Cancel, mysql_msg->Cancel);
     }
-
 }
 
-void DatabaseManager::displayMysqlDatabaseSelections(const QModelIndex &index)
+void DatabaseManager::displayDatabaseSelections(const QModelIndex &index)
 {
     QModelIndexList id = StandardModel2->match(StandardModel2->index(0, 0),Qt::DisplayRole,QVariant::fromValue(index.data()),2, Qt::MatchRecursive);
     QModelIndexList id2 = StandardModel2->match(StandardModel2->index(0, 0),Qt::DisplayRole,QVariant::fromValue(index.parent().data()),2, Qt::MatchRecursive);
     if(StandardModel->itemFromIndex(index)->checkState() == Qt::Checked && id.empty()){
         QStandardItem *selected = new QStandardItem(index.data().toString());
-        if(index.parent().data() != "MySQL Databases"){
+        if(index.parent().data() != "Databases"){
             if(!id2.empty()){
                 ContainerRootNode2->child(id2.value(0).row(),0)->appendRow(selected);
             }else{
@@ -202,20 +201,108 @@ void DatabaseManager::displayMysqlDatabaseSelections(const QModelIndex &index)
 
 }
 
-void DatabaseManager::backupDatabases()
-{
+QString DatabaseManager::folderName(){
+    if(mysql_remote_backup){
+        return "remote";
+    }else{
+        return "backup";
+    }
+}
+
+QString DatabaseManager::convertVectorToString(QVector<QString> data){
+    QVector<QString>::iterator it;
+    QString result = "";
+    for(it = data.begin(); it != data.end(); it++){
+        result += " "+(*it);
+    }
+
+    return result;
+}
+
+void DatabaseManager::executeBackup(int option, databasecontainer<QString> *selected){
     QString filename="createDump.sh";
     QFile file(filename);
     QProcess *createDump = new QProcess();
-    if(file.open(QIODevice::WriteOnly | QIODevice::Text)){
-    QTextStream out(&file);
-    out << "#!/bin/sh\n";
-    out << "mysqldump -h"<<getHost()<<" -u"<<getUsername()<<" -p"<<getPassword()<<" diploma > dump.sql";
-    file.close();
+    switch(option){
+    case 1:
+        if(file.open(QIODevice::WriteOnly | QIODevice::Text)){
+        QTextStream out(&file);
+            out << "#!/bin/sh\n";
+            out << "mysqldump -h"<<getHost()<<" -u"<<getUsername()<<" -p"<<getPassword()<<" --databases"+selected->returnOnlyDatabasesFromContainer()+ " > "<<folderName()<<"/dump_databases_"+QDate::currentDate().toString("MM_dd_yyyy")+".sql";
+            file.close();
+        }
+        createDump->start("/bin/sh" , QStringList() <<"createDump.sh");
+        createDump->waitForFinished();
+        createDump->close();
+        break;
+    case 2:
+    {
+        node<QString> *temp;
+        temp = selected->top();
+        QString result = "";
+        while(temp != NULL){
+            if(!temp->tables.empty()){
+                result += " "+temp->dbname;
+                result += convertVectorToString(temp->tables);
+                if(file.open(QIODevice::WriteOnly | QIODevice::Text)){
+                QTextStream out(&file);
+                    out << "#!/bin/sh\n";
+                    out << "mysqldump -h"<<getHost()<<" -u"<<getUsername()<<" -p"<<getPassword()<<" --tables"+result+ " > "<<folderName()<<"/dump_"+temp->dbname+"_"+QDate::currentDate().toString("MM_dd_yyyy")+".sql";
+                    file.close();
+                }
+            }
+            createDump->start("/bin/sh" , QStringList() <<"createDump.sh");
+            createDump->waitForFinished();
+            createDump->close();
+            temp = temp->next;
+            result = "";
+        }
     }
+        break;
+    default:
+        qDebug() << "wrong option";
+        break;
+    }
+}
 
+void DatabaseManager::backupDatabases()
+{
+    databasecontainer<QString> *selected = new databasecontainer<QString>();
+    if(!QDir(folderName()).exists()){
+        QDir().mkdir(folderName());
+    }
+    QString databases;
+    QModelIndex in = StandardModel->index(0,0);
+    for(int i = 0; i < mysqlContainer->size; i++){
+        QModelIndex n = StandardModel->index(i, 0, in);
+        QVector<QString> tables;
+        if(StandardModel->itemFromIndex(n)->checkState() == Qt::Checked){
+            databases = StandardModel->data(n).toString();
+            if(StandardModel->itemFromIndex(n)->hasChildren()){
+                for(int j = 0; j < StandardModel->itemFromIndex(n)->rowCount(); j++){
+                    QModelIndex n2 = StandardModel->index(j, 0, StandardModel->itemFromIndex(n)->index());
+                    if(StandardModel->itemFromIndex(n2)->checkState() == Qt::Checked){
+                        tables << StandardModel->data(n2).toString();
+                    }
+                }
+            }
+            selected->populateDbContainer(databases, tables);
+        }
+    }
+    executeBackup(1, selected);
+    executeBackup(2, selected);
     StandardModel->clear();
     StandardModel2->clear();
-    createDump->start("/bin/sh" , QStringList() <<"createDump.sh");
+    this->close();
     mysql_msg->information(this, tr("Backup Alert"), tr("Backup was successfull!"),mysql_msg->Cancel, mysql_msg->Cancel);
+}
+
+void DatabaseManager::storeInMySQLRemoteBackupFolder(bool value)
+{
+    mysql_remote_backup = value;
+}
+
+void DatabaseManager::storeInPostgreSQLRemoteBackupFolder(bool value)
+{
+    postgreSQL_remote_backup = value;
 }

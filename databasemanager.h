@@ -22,6 +22,8 @@
 #include <QFile>
 #include <QProcess>
 #include <QTextStream>
+#include <QDir>
+#include <QDate>
 
 using namespace std;
 
@@ -37,13 +39,16 @@ public:
     explicit DatabaseManager(QWidget *parent = 0);
     void displayDatabases(node<QString> *head);
     ~DatabaseManager();
-    void setUsername(QString username);
-    void setPassword(QString password);
-    void setHost(QString host);
+    void setUsername(QString username_val);
+    void setPassword(QString password_val);
+    void setHost(QString host_val);
     QString getUsername();
     QString getPassword();
     QString getHost();
     QStringList databaseList;
+    QString folderName();
+    void executeBackup(int option, databasecontainer<QString> *selected);
+    QString convertVectorToString(QVector<QString> data);
 
 private:
     Ui::DatabaseManager *ui;
@@ -60,14 +65,18 @@ private:
     QString host;
     QString password;
     QString username;
+    bool mysql_remote_backup;
+    bool postgreSQL_remote_backup;
 
 private slots:
-    void connectToMysqlServer(QString host, QString username, QString password);
-    void testMysqlConnection(QString host, QString username, QString password);
-    void connectToPostgreSQLServer(QString host, QString username, QString password);
-    void testPostgreSQLConnection(QString host, QString username, QString password);
-    void displayMysqlDatabaseSelections(const QModelIndex &index);
+    void connectToMysqlServer(QString host_val, QString username_val, QString password_val);
+    void testMysqlConnection(QString host_val, QString username_val, QString password_val);
+    void connectToPostgreSQLServer(QString host_val, QString username_val, QString password_val);
+    void testPostgreSQLConnection(QString host_val, QString username_val, QString password_val);
+    void displayDatabaseSelections(const QModelIndex &index);
     void backupDatabases();
+    void storeInMySQLRemoteBackupFolder(bool value);
+    void storeInPostgreSQLRemoteBackupFolder(bool value);
 
 };
 
