@@ -13,7 +13,8 @@ mysqlSettings::mysqlSettings(QWidget *parent) :
     DatabaseManager *db = new DatabaseManager();
     ssh = new sshManager();
 
-    connect(ui->loadDefualt, SIGNAL(clicked()), this, SLOT(loadDefault()));
+    connect(ui->loadDefualt, SIGNAL(clicked()), this, SLOT(loadMySQLDefault()));
+    connect(ui->loadSSHDefault, SIGNAL(clicked()), this, SLOT(loadSSHDefault()));
 
     connect(this, SIGNAL(storeInMySQLRemoteBackupFolder(bool)), db, SLOT(storeInMySQLRemoteBackupFolder(bool)));
 
@@ -45,14 +46,14 @@ void mysqlSettings::testingConnection()
 
 void mysqlSettings::emitSSHConnectionSignal()
 {
-    ssh->setSSHHost(ui->mysql_backup_ip->text());
-    ssh->setSSHUsername(ui->mysql_backup_username->text());
-    ssh->setSSHPassword(ui->mysql_backup_password->text());
     emit sendSSHParameters(ssh->getSSHHost(), ssh->getSSHUsername(), ssh->getSSPassword());
 }
 
 void mysqlSettings::tryingToConnect()
 {
+    ssh->setSSHHost(ui->mysql_backup_ip->text());
+    ssh->setSSHUsername(ui->mysql_backup_username->text());
+    ssh->setSSHPassword(ui->mysql_backup_password->text());
     mysqlParameters.ipAddress = ui->mysql_host->text();
     mysqlParameters.username = ui->mysql_username->text();
     mysqlParameters.password = ui->mysql_password->text();
@@ -69,11 +70,18 @@ void mysqlSettings::createDump()
 
 }
 
-void mysqlSettings::loadDefault()
+void mysqlSettings::loadMySQLDefault()
 {
     ui->mysql_host->setText("192.168.1.224");
     ui->mysql_username->setText("root");
     ui->mysql_password->setText("dlords");
+}
+
+void mysqlSettings::loadSSHDefault()
+{
+    ui->mysql_backup_ip->setText("192.168.1.194");
+    ui->mysql_backup_username->setText("root");
+    ui->mysql_backup_password->setText("dlords");
 }
 
 void mysqlSettings::enableRemoteManaulBackup(bool value)

@@ -10,6 +10,7 @@ DatabaseManager::DatabaseManager(QWidget *parent) :
     StandardModel2 = new QStandardItemModel;
     driver = sql::mysql::get_driver_instance();
     mysql_msg = new QMessageBox(this);
+    ssh = new sshManager();
 
     connect(ui->databaseView, SIGNAL(clicked(QModelIndex)), this, SLOT(displayDatabaseSelections(QModelIndex)));
     connect(ui->backup_btn, SIGNAL(clicked()), this, SLOT(backupDatabases()));
@@ -156,7 +157,6 @@ void DatabaseManager::connectToMysqlServer(QString host, QString username, QStri
                     mysqlContainer->populateDbContainer(res->getString("Database").c_str(), tables);
                 }
             }
-            ui->label->setText("connection successfull!");
             containerHead = mysqlContainer->top();
             displayDatabases(containerHead);
         }
@@ -245,7 +245,7 @@ void DatabaseManager::executeBackup(int option, databasecontainer<QString> *sele
                 result += " "+temp->dbname;
                 result += convertVectorToString(temp->tables);
                 if(file.open(QIODevice::WriteOnly | QIODevice::Text)){
-                QTextStream out(&file);
+                    QTextStream out(&file);
                     out << "#!/bin/sh\n";
                     out << "mysqldump -h"<<getHost()<<" -u"<<getUsername()<<" -p"<<getPassword()<<" --tables"+result+ " > "<<folderName()<<"/dump_"+temp->dbname+"_"+QDate::currentDate().toString("MM_dd_yyyy")+".sql";
                     file.close();
@@ -293,6 +293,7 @@ void DatabaseManager::backupDatabases()
     executeBackup(2, selected);
     StandardModel->clear();
     StandardModel2->clear();
+    ssh->sendBackupToRemoteSSHServer(ssh->getSSHHost(), ssh->getSSHUsername(), ssh->getSSPassword());
     this->close();
     mysql_msg->information(this, tr("Backup Alert"), tr("Backup was successfull!"),mysql_msg->Cancel, mysql_msg->Cancel);
 }

@@ -9,6 +9,7 @@
 #include <QFile>
 #include <QProcess>
 #include <QTextStream>
+#include "zip.h"
 
 
 class sshManager : public QDialog
@@ -25,16 +26,18 @@ public:
     QString getSSHHost();
     QString getSSHUsername();
     QString getSSPassword();
+    Zip zip;
+    static QString host;
+    static QString username;
+    static QString password;
 
 private:
-    QString host;
-    QString username;
-    QString password;
     QMessageBox *msg;
 
 public slots:
     void testSSHConnection(QString host,QString username ,QString password);
 
 };
+
 
 #endif // SSHMANAGER_H

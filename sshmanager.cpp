@@ -31,13 +31,17 @@ void sshManager::sendBackupToRemoteSSHServer(QString host, QString username, QSt
     QFile file(filename);
     QProcess *send = new QProcess();
     if(file.open(QIODevice::WriteOnly | QIODevice::Text)){
-    QTextStream out(&file);
-    out << "#!/bin/sh\n";
-    out << "sshpass -p"<<password<<" scp dump.sql "<<username<<"@"<<host<<":/backup/" ;
-    file.close();
+        QTextStream out(&file);
+        out << "#!/bin/sh\n";
+        out << "sshpass -p"<<password<<" scp remote/backup.zip "<<username<<"@"<<host<<":/backup/" ;
+        file.close();
     }
-
+    send->start("/bin/sh" , QStringList() <<"zipper.sh");
+    send->waitForFinished();
     send->start("/bin/sh" , QStringList() <<"send.sh");
+    send->waitForFinished();
+    send->close();
+
 }
 
 void sshManager::testSSHConnection(QString host, QString username, QString password)

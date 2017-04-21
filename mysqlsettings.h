@@ -33,7 +33,8 @@ public slots:
     void enableRemoteManaulBackup(bool value);
     void enableRemoteAutomaticBackup(bool value);
     void createDump();
-    void loadDefault();
+    void loadMySQLDefault();
+    void loadSSHDefault();
 
 private:
     Ui::mysqlSettings *ui;

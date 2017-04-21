@@ -24,6 +24,7 @@
 #include <QTextStream>
 #include <QDir>
 #include <QDate>
+#include "sshmanager.h"
 
 using namespace std;
 
@@ -67,6 +68,7 @@ private:
     QString username;
     bool mysql_remote_backup;
     bool postgreSQL_remote_backup;
+    sshManager *ssh;
 
 private slots:
     void connectToMysqlServer(QString host_val, QString username_val, QString password_val);
