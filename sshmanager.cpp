@@ -25,26 +25,47 @@ void sshManager::setSSHPassword(QString password_value)
     password = password_value;
 }
 
+
+
 void sshManager::sendBackupToRemoteSSHServer(QString host, QString username, QString password)
 {
-    QString filename="send.sh";
-    QFile file(filename);
-    QProcess *send = new QProcess();
-    if(file.open(QIODevice::WriteOnly | QIODevice::Text)){
-        QTextStream out(&file);
-        out << "#!/bin/sh\n";
-        out << "sshpass -p"<<password<<" scp remote/backup.zip "<<username<<"@"<<host<<":/backup/" ;
-        file.close();
+    if(zip.Zipped()){
+        QString filename="send.sh";
+        QFile file(filename);
+        QProcess *send = new QProcess();
+        if(file.open(QIODevice::WriteOnly | QIODevice::Text)){
+            QTextStream out(&file);
+            out << "#!/bin/sh\n";
+            out << "sshpass -p"<<password<<" scp "+zip.returnAllBackups()+" "<<username<<"@"<<host<<":/backup/" ;
+            file.close();
+        }
+        send->start("/bin/sh" , QStringList() <<"send.sh");
+        send->waitForFinished();
+        send->close();
+        deleteAllSQLFiles();
+    }else{
+        qDebug() << "zip error";
     }
-    send->start("/bin/sh" , QStringList() <<"zipper.sh");
-    send->waitForFinished();
-    send->start("/bin/sh" , QStringList() <<"send.sh");
-    send->waitForFinished();
-    send->close();
 
 }
 
-void sshManager::testSSHConnection(QString host, QString username, QString password)
+void sshManager::deleteAllSQLFiles()
+{
+    QString filename="delete.sh";
+    QFile file(filename);
+    QProcess *deleteSQLFiles = new QProcess();
+    if(file.open(QIODevice::WriteOnly | QIODevice::Text)){
+        QTextStream out(&file);
+        out << "#!/bin/sh\n";
+        out << "rm mySQLRemote/*.sql" ;
+        file.close();
+    }
+    deleteSQLFiles->start("/bin/sh" , QStringList() <<"delete.sh");
+    deleteSQLFiles->waitForFinished();
+    deleteSQLFiles->close();
+}
+
+bool sshManager::testSSHConnection(QString host, QString username, QString password)
 {
     ssh_session my_ssh_session;
     int verbosity = SSH_LOG_PROTOCOL;
@@ -62,11 +83,13 @@ void sshManager::testSSHConnection(QString host, QString username, QString passw
     rc = ssh_userauth_password(my_ssh_session, NULL, password.toStdString().c_str());
     if (rc != 0)
     {
-     QMessageBox::critical(this, tr("Testing connection to SSH server"),tr(ssh_get_error(my_ssh_session)), QMessageBox::Cancel, QMessageBox::Cancel);
+     QMessageBox::critical(this, tr("Testing connection to SSH server"),tr(ssh_get_error(my_ssh_session)), QMessageBox::Ok, QMessageBox::Ok);
       ssh_disconnect(my_ssh_session);
+      return false;
     }else{
-      QMessageBox::information(this, tr("Testing connection to SSH server"), tr("Connection successfull"), QMessageBox::Cancel, QMessageBox::Cancel);
+      QMessageBox::information(this, tr("Testing connection to SSH server"), tr("Connection successfull"), QMessageBox::Ok, QMessageBox::Ok);
       ssh_disconnect(my_ssh_session);
+      return true;
     }
 }
 

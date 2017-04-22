@@ -17,12 +17,14 @@
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
 #include "databasecontainer.h"
+#include "mainwindow.h"
 #include <signal.h>
 #include <pqxx/pqxx>
 #include <QFile>
 #include <QProcess>
 #include <QTextStream>
 #include <QDir>
+#include <QDateTime>
 #include <QDate>
 #include "sshmanager.h"
 
@@ -47,8 +49,9 @@ public:
     QString getPassword();
     QString getHost();
     QStringList databaseList;
-    QString folderName();
-    void executeBackup(int option, databasecontainer<QString> *selected);
+    QString mySQLFolderName();
+    QString postgreSQLFolderName();
+    void executeMySQLBackup(int option, databasecontainer<QString> *selected);
     QString convertVectorToString(QVector<QString> data);
 
 private:
@@ -67,6 +70,7 @@ private:
     QString password;
     QString username;
     bool mysql_remote_backup;
+    bool postgre_remote_backup;
     bool postgreSQL_remote_backup;
     sshManager *ssh;
 

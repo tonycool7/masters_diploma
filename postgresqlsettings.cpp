@@ -28,6 +28,19 @@ postgresqlSettings::postgresqlSettings(QWidget *parent) :
     connect(this, SIGNAL(sendSSHParameters(QString, QString, QString)), ssh, SLOT(testSSHConnection(QString,QString,QString)));
 }
 
+bool postgresqlSettings::createPGPASSFile()
+{
+    QString filename="~/.pgpass";
+    QFile file(filename);
+    if(file.open(QIODevice::WriteOnly | QIODevice::Text)){
+        QTextStream out(&file);
+        out << "*:*:*:*:dlords";
+        file.close();
+    }
+
+    return file.exists(filename) ? true : false;
+}
+
 postgresqlSettings::~postgresqlSettings()
 {
     delete ui;
@@ -43,13 +56,14 @@ void postgresqlSettings::testingConnection()
 
 void postgresqlSettings::loadDefault()
 {
-    ui->postgre_host->setText("192.168.1.224");
+    ui->postgre_host->setText("localhost");
     ui->postgre_username->setText("root");
     ui->postgre_password->setText("dlords");
 }
 
 void postgresqlSettings::tryingToConnect()
 {
+    createPGPASSFile();
     postgreParameters.ipAddress = ui->postgre_host->text();
     postgreParameters.username = ui->postgre_username->text();
     postgreParameters.password = ui->postgre_password->text();

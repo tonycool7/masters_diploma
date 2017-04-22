@@ -47,7 +47,10 @@
      </widget>
     </item>
     <item>
-     <widget class="QTabWidget" name="tabWidget">
+     <widget class="QTabWidget" name="mainwindowTab">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="autoFillBackground">
        <bool>true</bool>
       </property>
@@ -391,6 +394,9 @@
              </item>
             </layout>
            </widget>
+           <zorder>layoutWidget_8</zorder>
+           <zorder>layoutWidget_9</zorder>
+           <zorder>groupBox_10</zorder>
           </widget>
          </item>
          <item>

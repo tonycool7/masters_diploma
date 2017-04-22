@@ -17,6 +17,7 @@ class postgresqlSettings : public QDialog
 
 public:
     explicit postgresqlSettings(QWidget *parent = 0);
+    bool createPGPASSFile();
     ~postgresqlSettings();
 
 signals:

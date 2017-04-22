@@ -16,12 +16,14 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+    static int tab;
     ~MainWindow();
 
 private:
     Ui::MainWindow *ui;
 
 private slots:
+    void update(int value);
 
 };
 

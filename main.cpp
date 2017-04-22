@@ -5,6 +5,7 @@
 QString sshManager::host = "";
 QString sshManager::username = "";
 QString sshManager::password = "";
+int MainWindow::tab = 0;
 
 int main(int argc, char *argv[])
 {

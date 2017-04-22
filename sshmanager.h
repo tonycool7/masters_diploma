@@ -23,6 +23,7 @@ public:
     void setSSHUsername(QString username_value);
     void setSSHPassword(QString password_value);
     void sendBackupToRemoteSSHServer(QString host,QString username ,QString password);
+    void deleteAllSQLFiles();
     QString getSSHHost();
     QString getSSHUsername();
     QString getSSPassword();
@@ -35,7 +36,7 @@ private:
     QMessageBox *msg;
 
 public slots:
-    void testSSHConnection(QString host,QString username ,QString password);
+    bool testSSHConnection(QString host,QString username ,QString password);
 
 };
 

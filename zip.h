@@ -6,13 +6,16 @@
 #include <QProcess>
 #include <QTextStream>
 #include <QDir>
+#include <QDate>
+#include <QDateTime>
 
 class Zip
 {
 public:
     Zip();
-    void Zipped();
+    bool Zipped();
     QString returnAllFiles();
+    QString returnAllBackups();
 };
 
 #endif // ZIP_H
