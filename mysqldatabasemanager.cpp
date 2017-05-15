@@ -2,7 +2,7 @@
 
 MysqlDatabaseManager::MysqlDatabaseManager()
 {
-
+    ssh = new sshManager();
 }
 
 MysqlDatabaseManager::~MysqlDatabaseManager()
@@ -161,7 +161,7 @@ void MysqlDatabaseManager::backupDatabases()
     executeBackup(2, selected);
 
     if(remote_backup){
-        ssh->sendBackupToRemoteSSHServer(ssh->getSSHHost(), ssh->getSSHUsername(), ssh->getSSPassword());
+        ssh->sendBackupToRemoteSSHServer(ssh->getSSHHost(), ssh->getSSHUsername(), ssh->getSSPassword(), folderName());
     }
     this->close();
     msg->information(this, tr("Backup Alert"), tr("Backup was successfull!"),msg->Ok, msg->Ok);

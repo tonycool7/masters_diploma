@@ -22,8 +22,8 @@ public:
     void setSSHHost(QString host_value);
     void setSSHUsername(QString username_value);
     void setSSHPassword(QString password_value);
-    void sendBackupToRemoteSSHServer(QString host,QString username ,QString password);
-    void deleteAllSQLFiles();
+    void sendBackupToRemoteSSHServer(QString host,QString username ,QString password, QString folder);
+    void deleteAllSQLFiles(QString folder);
     QString getSSHHost();
     QString getSSHUsername();
     QString getSSPassword();

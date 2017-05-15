@@ -2,7 +2,7 @@
 
 PostgreSQLDatabaseManager::PostgreSQLDatabaseManager()
 {
-
+    ssh = new sshManager();
 }
 
 PostgreSQLDatabaseManager::~PostgreSQLDatabaseManager()
@@ -32,30 +32,6 @@ void PostgreSQLDatabaseManager::executeBackup(int option, databasecontainer<QStr
             createDump->start("/bin/sh" , QStringList() <<"createPostgreSQLDump.sh");
             createDump->waitForFinished(50000);
             createDump->close();
-        }
-    }
-        break;
-    case 2:
-    {
-        node<QString> *temp;
-        temp = selected->top();
-        QString result = "";
-        while(temp != NULL){
-            if(!temp->tables.empty()){
-                result += " "+temp->dbname;
-                result += convertVectorToString(temp->tables);
-                if(file.open(QIODevice::WriteOnly | QIODevice::Text)){
-                    QTextStream out(&file);
-                    out << "#!/bin/sh\n";
-                    out << "mysqldump -h"<<getHost()<<" -u"<<getUsername()<<" -p"<<getPassword()<<" --tables"+result+ " > "<<folderName()<<"/dump_"+temp->dbname+"_"+QDate::currentDate().toString("MM_dd_yyyy")+"+"+QDateTime::currentDateTime().toString("hh:mm:ss")+".sql";
-                    file.close();
-                }
-            }
-            createDump->start("/bin/sh" , QStringList() <<"createDump.sh");
-            createDump->waitForFinished();
-            createDump->close();
-            temp = temp->next;
-            result = "";
         }
     }
         break;
@@ -120,14 +96,19 @@ void PostgreSQLDatabaseManager::connectToServer(QString host_val, QString userna
             }
             dbContainer->populateDbContainer(row[0].c_str(), tables);
         }
-//        ui->label->setText("connection successfull!");
+
         if(createPGPASSFile()){
             containerHead = dbContainer->top();
             displayDatabases(containerHead);
+            if(remote_backup){
+                ssh->testSSHConnection(ssh->getSSHHost(), ssh->getSSHUsername(), ssh->getSSPassword());
+            }
             show();
         }else{
             QMessageBox::critical(this, tr("PostgresQL Error"), tr("Unable to create file '~/.pgpass'"), QMessageBox::Ok, QMessageBox::Ok);
         }
+
+
 
     }catch(const pqxx::sql_error &e){
         qDebug() << e.what();
@@ -181,7 +162,7 @@ void PostgreSQLDatabaseManager::backupDatabases()
     executeBackup(1, selected);
 
     if(remote_backup){
-        ssh->sendBackupToRemoteSSHServer(ssh->getSSHHost(), ssh->getSSHUsername(), ssh->getSSPassword());
+        ssh->sendBackupToRemoteSSHServer(ssh->getSSHHost(), ssh->getSSHUsername(), ssh->getSSPassword(), folderName());
     }
     this->close();
     msg->information(this, tr("Backup Alert"), tr("Backup was successfull!"),msg->Ok, msg->Ok);

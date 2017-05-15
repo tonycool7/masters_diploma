@@ -30,6 +30,7 @@ signals:
     void sendParameters(QString, QString, QString);
     void testingParameters(QString, QString, QString);
     void sendSSHParameters(QString, QString, QString);
+    void storeInMySQLRemoteBackupFolder(bool);
 
 public slots:
     void testingConnection();

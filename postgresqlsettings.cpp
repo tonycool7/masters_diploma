@@ -14,6 +14,8 @@ postgresqlSettings::postgresqlSettings(QWidget *parent) :
     DatabaseManager *db = new PostgreSQLDatabaseManager();
     ssh = new sshManager();
 
+    connect(this, SIGNAL(storeInMySQLRemoteBackupFolder(bool)), db, SLOT(storeInRemoteBackupFolder(bool)));
+
     connect(ui->loadDefault, SIGNAL(clicked()), this, SLOT(loadPostgreSQLDefault()));
     connect(ui->loadDefault2, SIGNAL(clicked()), this, SLOT(loadSSHDefault()));
 
@@ -98,6 +100,9 @@ void postgresqlSettings::loadSSHDefault()
 
 void postgresqlSettings::tryingToConnect()
 {
+    ssh->setSSHHost(ui->postgre_backup_ip->text());
+    ssh->setSSHUsername(ui->postgre_backup_username->text());
+    ssh->setSSHPassword(ui->postgre_backup_password->text());
     setHost(ui->postgre_host->text());
     setUsername(ui->postgre_username->text());
     setPassword(ui->postgre_password->text());
@@ -107,6 +112,7 @@ void postgresqlSettings::tryingToConnect()
 void postgresqlSettings::enableRemoteManaulBackup(bool value)
 {
      ui->postgre_destination_settings->setEnabled(value);
+     emit storeInMySQLRemoteBackupFolder(value);
 }
 
 void postgresqlSettings::enableRemoteAutomaticBackup(bool value)

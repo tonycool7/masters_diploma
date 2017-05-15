@@ -32,9 +32,9 @@ void sshManager::setSSHPassword(QString password_value)
 
 
 
-void sshManager::sendBackupToRemoteSSHServer(QString host, QString username, QString password)
+void sshManager::sendBackupToRemoteSSHServer(QString host, QString username, QString password, QString folder)
 {
-    if(zip.Zipped("mySQLRemote")){
+    if(zip.Zipped(folder)){
         QString filename="send.sh";
         QFile file(filename);
         QProcess *send = new QProcess();
@@ -42,23 +42,22 @@ void sshManager::sendBackupToRemoteSSHServer(QString host, QString username, QSt
             QTextStream out(&file);
             out << "#!/bin/sh\n";
             if(publicKeyAuth){
-                out << "scp "+zip.returnAllBackups("mySQLRemote")+" "<<username<<"@"<<host<<":/diplom/p2p/backup/" ;
+                out << "scp "+zip.returnAllBackups(folder)+" "<<username<<"@"<<host<<":/diplom/p2p/backup/" ;
             }else{
-                out << "sshpass -p"<<password<<" scp "+zip.returnAllBackups("mySQLRemote")+" "<<username<<"@"<<host<<":/diplom/p2p/backup/" ;
+                out << "sshpass -p"<<password<<" scp "+zip.returnAllBackups(folder)+" "<<username<<"@"<<host<<":/diplom/p2p/backup/" ;
             }
             file.close();
         }
         send->start("/bin/sh" , QStringList() <<"send.sh");
         send->waitForFinished();
         send->close();
-        deleteAllSQLFiles();
+        deleteAllSQLFiles(folder);
     }else{
         qDebug() << "zip error";
     }
-
 }
 
-void sshManager::deleteAllSQLFiles()
+void sshManager::deleteAllSQLFiles(QString folder)
 {
     QString filename="delete.sh";
     QFile file(filename);
@@ -66,7 +65,7 @@ void sshManager::deleteAllSQLFiles()
     if(file.open(QIODevice::WriteOnly | QIODevice::Text)){
         QTextStream out(&file);
         out << "#!/bin/sh\n";
-        out << "rm mySQLRemote/*.sql" ;
+        out << "rm "<<folder<<"/*.sql" ;
         file.close();
     }
     deleteSQLFiles->start("/bin/sh" , QStringList() <<"delete.sh");

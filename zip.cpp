@@ -35,7 +35,6 @@ QString Zip::returnAllFiles(QString folder){
         QFileInfo fileInfo = list.at(i);
         files += " "+folder+"/"+fileInfo.fileName();
     }
-
     return files;
 }
 
