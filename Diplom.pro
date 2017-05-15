@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     sshmanager.cpp \
     zip.cpp \
     mysqldatabasemanager.cpp \
-    postgresqldatabasemanager.cpp
+    postgresqldatabasemanager.cpp \
+    notifier.cpp
 
 HEADERS  += mainwindow.h \
     mysqlsettings.h \
@@ -31,7 +32,8 @@ HEADERS  += mainwindow.h \
     sshmanager.h \
     zip.h \
     mysqldatabasemanager.h \
-    postgresqldatabasemanager.h
+    postgresqldatabasemanager.h \
+    notifier.h
 
 FORMS    += mainwindow.ui \
     mysqlsettings.ui \

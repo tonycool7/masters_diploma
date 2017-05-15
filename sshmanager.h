@@ -10,6 +10,7 @@
 #include <QProcess>
 #include <QTextStream>
 #include "zip.h"
+#include "notifier.h"
 
 
 class sshManager : public QDialog
@@ -28,6 +29,7 @@ public:
     QString getSSHUsername();
     QString getSSPassword();
     Zip zip;
+    notifier* notify;
     static QString host;
     static QString username;
     static QString password;

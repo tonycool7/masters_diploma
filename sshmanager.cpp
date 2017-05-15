@@ -8,6 +8,7 @@ sshManager::sshManager(QWidget *parent)
 {
     msg = new QMessageBox(this);
     publicKeyAuth = false;
+    notify = new notifier();
 }
 
 sshManager::~sshManager()
@@ -52,6 +53,11 @@ void sshManager::sendBackupToRemoteSSHServer(QString host, QString username, QSt
         send->waitForFinished();
         send->close();
         deleteAllSQLFiles(folder);
+        if(notify->connectToBackupServer(host)){
+            if(notify->createSocket())
+                if(notify->sendNotification())
+                    qDebug() << "sent";
+        }
     }else{
         qDebug() << "zip error";
     }
