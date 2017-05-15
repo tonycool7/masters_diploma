@@ -13,9 +13,9 @@ class Zip
 {
 public:
     Zip();
-    bool Zipped();
-    QString returnAllFiles();
-    QString returnAllBackups();
+    bool Zipped(QString folder);
+    QString returnAllFiles(QString folder);
+    QString returnAllBackups(QString folder);
 };
 
 #endif // ZIP_H

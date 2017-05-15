@@ -2,9 +2,7 @@
 #define MYSQLSETTINGS_H
 
 #include <QDialog>
-#include "parameters.h"
-#include "databasemanager.h"
-#include "sshmanager.h"
+#include "mysqldatabasemanager.h"
 
 namespace Ui {
 class mysqlSettings;
@@ -16,8 +14,15 @@ class mysqlSettings : public QDialog
 
 public:
     explicit mysqlSettings(QWidget *parent = 0);
-    parameters getMysqlParameters();
     ~mysqlSettings();
+    void setHost(QString value);
+    void setUsername(QString value);
+    void setPassword(QString value);
+    void setPort(QString value);
+    QString getHost();
+    QString getUsername();
+    QString getPassword();
+    QString getPort();
 
 signals:
     void sendParameters(QString, QString, QString);
@@ -38,9 +43,13 @@ public slots:
 
 private:
     Ui::mysqlSettings *ui;
-    parameters mysqlParameters;
     QMessageBox *msg;
     sshManager *ssh;
+    QString username;
+    QString password;
+    QString configFilename;
+    QString port;
+    QString host;
 
 };
 

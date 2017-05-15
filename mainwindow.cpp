@@ -1,7 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "mysqlsettings.h"
 #include <QDebug>
+
+int MainWindow::tab = 0;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -29,5 +30,4 @@ MainWindow::~MainWindow()
 void MainWindow::update(int value)
 {
     tab = value;
-    qDebug() << tab;
 }

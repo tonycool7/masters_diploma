@@ -19,6 +19,7 @@ public:
     void displayDatabaseContainer();
     bool searchForDb(QString data);
     QString returnOnlyDatabasesFromContainer();
+    QVector<QString> returnOnlyDatabasesFromContainerVector();
     int size;
 };
 
@@ -39,6 +40,19 @@ QString databasecontainer<containerType>::returnOnlyDatabasesFromContainer(){
         if(temp->tables.empty()){
             result += " "+temp->dbname;
         }
+        temp = temp->next;
+    }
+    return result;
+}
+
+template<typename containerType>
+QVector<QString> databasecontainer<containerType>::returnOnlyDatabasesFromContainerVector(){
+    node<containerType> *temp;
+    temp = top();
+
+    QVector<QString> result;
+    while(temp != NULL){
+        result << temp->dbname;
         temp = temp->next;
     }
     return result;

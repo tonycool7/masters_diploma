@@ -34,6 +34,7 @@ public:
 
 private:
     QMessageBox *msg;
+    bool publicKeyAuth;
 
 public slots:
     bool testSSHConnection(QString host,QString username ,QString password);

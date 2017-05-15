@@ -2,9 +2,8 @@
 #define POSTGRESQLSETTINGS_H
 
 #include <QDialog>
-#include "parameters.h"
 #include "sshmanager.h"
-#include "databasemanager.h"
+#include "postgresqldatabasemanager.h"
 
 
 namespace Ui {
@@ -17,7 +16,14 @@ class postgresqlSettings : public QDialog
 
 public:
     explicit postgresqlSettings(QWidget *parent = 0);
-    bool createPGPASSFile();
+    void setHost(QString value);
+    void setUsername(QString value);
+    void setPassword(QString value);
+    void setPort(QString value);
+    QString getHost();
+    QString getUsername();
+    QString getPassword();
+    QString getPort();
     ~postgresqlSettings();
 
 signals:
@@ -27,7 +33,8 @@ signals:
 
 public slots:
     void testingConnection();
-    void loadDefault();
+    void loadPostgreSQLDefault();
+    void loadSSHDefault();
     void tryingToConnect();
     void enableRemoteManaulBackup(bool value);
     void enableRemoteAutomaticBackup(bool value);
@@ -35,9 +42,14 @@ public slots:
 
 private:
     Ui::postgresqlSettings *ui;
-    parameters postgreParameters;
     sshManager *ssh;
+    QString username;
+    QString password;
+    QString configFilename;
+    QString port;
+    QString host;
 
 };
+
 
 #endif // POSTGRESQLSETTINGS_H

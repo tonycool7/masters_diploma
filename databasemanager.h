@@ -17,7 +17,7 @@
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
 #include "databasecontainer.h"
-#include "mainwindow.h"
+//#include "mainwindow.h"
 #include <signal.h>
 #include <pqxx/pqxx>
 #include <QFile>
@@ -49,40 +49,32 @@ public:
     QString getPassword();
     QString getHost();
     QStringList databaseList;
-    QString mySQLFolderName();
-    QString postgreSQLFolderName();
-    void executeMySQLBackup(int option, databasecontainer<QString> *selected);
+    virtual QString folderName() = 0;
+    virtual void executeBackup(int option, databasecontainer<QString> *selected) = 0;
     QString convertVectorToString(QVector<QString> data);
 
-private:
+protected:
     Ui::DatabaseManager *ui;
-    QString msg;
     sql::Driver * driver;
     QStandardItemModel *StandardModel;
     QStandardItem *ContainerRootNode;
     QStandardItemModel *StandardModel2;
     QStandardItem *ContainerRootNode2;
-    databasecontainer<QString> *mysqlContainer;
-    databasecontainer<QString> *PostgreSQLContainer;
+    databasecontainer<QString> *dbContainer;
     node<QString> *containerHead;
-    QMessageBox *mysql_msg;
+    QMessageBox *msg;
     QString host;
     QString password;
     QString username;
-    bool mysql_remote_backup;
-    bool postgre_remote_backup;
-    bool postgreSQL_remote_backup;
+    bool remote_backup;
     sshManager *ssh;
 
-private slots:
-    void connectToMysqlServer(QString host_val, QString username_val, QString password_val);
-    void testMysqlConnection(QString host_val, QString username_val, QString password_val);
-    void connectToPostgreSQLServer(QString host_val, QString username_val, QString password_val);
-    void testPostgreSQLConnection(QString host_val, QString username_val, QString password_val);
+protected slots:
+    virtual void connectToServer(QString host_val, QString username_val, QString password_val) = 0;
+    virtual void testConnection(QString host_val, QString username_val, QString password_val) = 0;
     void displayDatabaseSelections(const QModelIndex &index);
-    void backupDatabases();
-    void storeInMySQLRemoteBackupFolder(bool value);
-    void storeInPostgreSQLRemoteBackupFolder(bool value);
+    virtual void backupDatabases() = 0;
+    virtual void storeInRemoteBackupFolder(bool value) = 0;
 
 };
 

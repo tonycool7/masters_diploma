@@ -18,17 +18,20 @@ SOURCES += main.cpp\
     postgresqlsettings.cpp \
     databasemanager.cpp \
     sshmanager.cpp \
-    zip.cpp
+    zip.cpp \
+    mysqldatabasemanager.cpp \
+    postgresqldatabasemanager.cpp
 
 HEADERS  += mainwindow.h \
     mysqlsettings.h \
     postgresqlsettings.h \
-    parameters.h \
     node.h \
     databasemanager.h \
     databasecontainer.h \
     sshmanager.h \
-    zip.h
+    zip.h \
+    mysqldatabasemanager.h \
+    postgresqldatabasemanager.h
 
 FORMS    += mainwindow.ui \
     mysqlsettings.ui \

@@ -9,7 +9,7 @@ DatabaseManager::DatabaseManager(QWidget *parent) :
     StandardModel = new QStandardItemModel;
     StandardModel2 = new QStandardItemModel;
     driver = sql::mysql::get_driver_instance();
-    mysql_msg = new QMessageBox(this);
+    msg = new QMessageBox(this);
     ssh = new sshManager();
 
     connect(ui->databaseView, SIGNAL(clicked(QModelIndex)), this, SLOT(displayDatabaseSelections(QModelIndex)));
@@ -18,8 +18,7 @@ DatabaseManager::DatabaseManager(QWidget *parent) :
     ui->databaseView->setModel(StandardModel);
     ui->seletedView->setModel(StandardModel2);
 
-    mysql_remote_backup = false;
-    postgre_remote_backup = false;
+    remote_backup = false;
 }
 
 DatabaseManager::~DatabaseManager()
@@ -87,98 +86,6 @@ void DatabaseManager::displayDatabases(node<QString> *head)
     }
 }
 
-void DatabaseManager::testMysqlConnection(QString host, QString username, QString password)
-{
-    try{
-        boost::scoped_ptr< sql::Connection > con(driver->connect(host.toStdString(), username.toStdString(), password.toStdString()));
-            mysql_msg->information(this, tr("Testing connection to MySQL server"),tr("Connection to MySQL server was successful"), mysql_msg->Ok, mysql_msg->Ok);
-    }catch(sql::SQLException &e){
-            mysql_msg->critical(this, tr("Testing connection to MySQL server"),tr("Connection to MySQL Server unsuccessful "), mysql_msg->Ok, mysql_msg->Ok);
-    }
-}
-
-void DatabaseManager::connectToPostgreSQLServer(QString host, QString username, QString password)
-{
-    setHost(host);
-    setPassword(password);
-    setUsername(username);
-    try{
-        pqxx::connection c{"host="+host.toStdString()+" dbname=postgres user="+username.toStdString()+" password="+password.toStdString()};
-        pqxx::work txn{c};
-        pqxx::result r = txn.exec("SELECT datname FROM pg_database WHERE datistemplate = false");
-        PostgreSQLContainer = new databasecontainer<QString>();
-        for (auto row: r){
-            row[0].c_str();
-            pqxx::connection c2{"host="+host.toStdString()+" dbname="+row[0].c_str()+" user="+username.toStdString()+" password="+password.toStdString()};
-            pqxx::work txn{c2};
-            pqxx::result r2 = txn.exec("SELECT * FROM information_schema.tables where table_schema='public'");
-            QVector<QString> tables;
-            for (auto row2: r2){
-                tables << row2[2].c_str();
-            }
-            PostgreSQLContainer->populateDbContainer(row[0].c_str(), tables);
-        }
-        ui->label->setText("connection successfull!");
-        containerHead = PostgreSQLContainer->top();
-        displayDatabases(containerHead);
-        show();
-    }catch(const pqxx::sql_error &e){
-        qDebug() << e.what();
-        mysql_msg->critical(this, tr("PostgreSQL Connection"), tr("Unable to connect"), mysql_msg->Ok, mysql_msg->Ok);
-    }
-}
-
-void DatabaseManager::testPostgreSQLConnection(QString host, QString username, QString password)
-{
-    try{
-        pqxx::connection postgreSQLConnection{"host="+host.toStdString()+" dbname=test user="+username.toStdString()+" password="+password.toStdString()};
-        mysql_msg->information(this, tr("Testing connection to postgreSQL server"),tr("Connection to PostgreSQL server was successful"), mysql_msg->Ok, mysql_msg->Ok);
-    }catch(const pqxx::sql_error &e){
-        mysql_msg->critical(this, tr("Testing connection to postgreSQL server"),tr("Connection to postgreSQL Server unsuccessful "), mysql_msg->Ok, mysql_msg->Ok);
-    }
-}
-
-void DatabaseManager::connectToMysqlServer(QString host, QString username, QString password){
-    setHost(host);
-    setPassword(password);
-    setUsername(username);
-    try{
-        boost::scoped_ptr< sql::Connection > con(driver->connect(host.toStdString(), username.toStdString(), password.toStdString()));
-        boost::scoped_ptr< sql::Statement > stmt(con->createStatement());
-        boost::scoped_ptr< sql::ResultSet > res(stmt->executeQuery("show databases"));
-        mysqlContainer = new databasecontainer<QString>();
-        if (res->rowsCount() == 0) {
-            ui->label->setText("not connected!");
-        }else{
-            while (res->next()) {
-                if(res->getString("Database").asStdString() != "information_schema" && res->getString("Database").asStdString() != "performance_schema"){
-                    stmt->execute("USE "+ res->getString("Database").asStdString());
-                    boost::scoped_ptr< sql::ResultSet > res2(stmt->executeQuery("show tables"));
-                    if (res2->rowsCount() > 0) {
-                        QVector<QString> tables;
-                        while(res2->next()){
-                            tables <<  res2->getString("Tables_in_"+res->getString("Database").asStdString()).c_str();
-                        }
-                        mysqlContainer->populateDbContainer(res->getString("Database").c_str(), tables);
-                    }
-                }
-            }
-            containerHead = mysqlContainer->top();
-            displayDatabases(containerHead);
-        }
-        if(mysql_remote_backup){
-            if(ssh->testSSHConnection(ssh->getSSHHost(), ssh->getSSHUsername(), ssh->getSSPassword())){
-                show();
-            }
-        }else{
-            show();
-        }
-    }catch(sql::SQLException &e){
-        qDebug() << "Error";
-        mysql_msg->critical(this, tr("Mysql Connection"), tr("Unable to connect"), mysql_msg->Cancel, mysql_msg->Cancel);
-    }
-}
-
 void DatabaseManager::displayDatabaseSelections(const QModelIndex &index)
 {
     QModelIndexList id = StandardModel2->match(StandardModel2->index(0, 0),Qt::DisplayRole,QVariant::fromValue(index.data()),2, Qt::MatchRecursive);
@@ -213,23 +120,6 @@ void DatabaseManager::displayDatabaseSelections(const QModelIndex &index)
 
 }
 
-QString DatabaseManager::mySQLFolderName(){
-    if(mysql_remote_backup){
-        return "mySQLRemote";
-    }else{
-        return "mySQLBackup";
-    }
-}
-
-QString DatabaseManager::postgreSQLFolderName()
-{
-    if(postgre_remote_backup){
-        return "postgreSQLRemote";
-    }else{
-        return "postgreSQLRemote";
-    }
-}
-
 QString DatabaseManager::convertVectorToString(QVector<QString> data){
     QVector<QString>::iterator it;
     QString result = "";
@@ -240,95 +130,3 @@ QString DatabaseManager::convertVectorToString(QVector<QString> data){
     return result;
 }
 
-void DatabaseManager::executeMySQLBackup(int option, databasecontainer<QString> *selected){
-    QString filename="createDump.sh";
-    QFile file(filename);
-    QProcess *createDump = new QProcess();
-    switch(option){
-    case 1:
-        if(file.open(QIODevice::WriteOnly | QIODevice::Text)){
-        QTextStream out(&file);
-            out << "#!/bin/sh\n";
-            out << "mysqldump -h"<<getHost()<<" -u"<<getUsername()<<" -p"<<getPassword()<<" --databases"+selected->returnOnlyDatabasesFromContainer()+ " > "<<mySQLFolderName()<<"/dump_databases_"+QDate::currentDate().toString("MM_dd_yyyy")+"+"+QDateTime::currentDateTime().toString("hh:mm:ss")+".sql";
-            file.close();
-        }
-        createDump->start("/bin/sh" , QStringList() <<"createDump.sh");
-        createDump->waitForFinished(50000);
-        createDump->close();
-        break;
-    case 2:
-    {
-        node<QString> *temp;
-        temp = selected->top();
-        QString result = "";
-        while(temp != NULL){
-            if(!temp->tables.empty()){
-                result += " "+temp->dbname;
-                result += convertVectorToString(temp->tables);
-                if(file.open(QIODevice::WriteOnly | QIODevice::Text)){
-                    QTextStream out(&file);
-                    out << "#!/bin/sh\n";
-                    out << "mysqldump -h"<<getHost()<<" -u"<<getUsername()<<" -p"<<getPassword()<<" --tables"+result+ " > "<<mySQLFolderName()<<"/dump_"+temp->dbname+"_"+QDate::currentDate().toString("MM_dd_yyyy")+"+"+QDateTime::currentDateTime().toString("hh:mm:ss")+".sql";
-                    file.close();
-                }
-            }
-            createDump->start("/bin/sh" , QStringList() <<"createDump.sh");
-            createDump->waitForFinished();
-            createDump->close();
-            temp = temp->next;
-            result = "";
-        }
-    }
-        break;
-    default:
-        qDebug() << "wrong option";
-        break;
-    }
-}
-
-void DatabaseManager::backupDatabases()
-{
-    databasecontainer<QString> *selected = new databasecontainer<QString>();
-    if(!QDir(mySQLFolderName()).exists()){
-        QDir().mkdir(mySQLFolderName());
-    }
-    QString databases;
-    QModelIndex in = StandardModel->index(0,0);
-    for(int i = 0; i < mysqlContainer->size; i++){
-        QModelIndex n = StandardModel->index(i, 0, in);
-        QVector<QString> tables;
-        if(StandardModel->itemFromIndex(n)->checkState() == Qt::Checked){
-            databases = StandardModel->data(n).toString();
-            if(StandardModel->itemFromIndex(n)->hasChildren()){
-                for(int j = 0; j < StandardModel->itemFromIndex(n)->rowCount(); j++){
-                    QModelIndex n2 = StandardModel->index(j, 0, StandardModel->itemFromIndex(n)->index());
-                    if(StandardModel->itemFromIndex(n2)->checkState() == Qt::Checked){
-                        tables << StandardModel->data(n2).toString();
-                    }
-                }
-            }
-            selected->populateDbContainer(databases, tables);
-        }
-    }
-    if(!MainWindow::tab){
-        executeMySQLBackup(1, selected);
-        executeMySQLBackup(2, selected);
-    }else{
-        qDebug() << "this is postgresql";
-    }
-    if(mysql_remote_backup){
-        ssh->sendBackupToRemoteSSHServer(ssh->getSSHHost(), ssh->getSSHUsername(), ssh->getSSPassword());
-    }
-    this->close();
-    mysql_msg->information(this, tr("Backup Alert"), tr("Backup was successfull!"),mysql_msg->Ok, mysql_msg->Ok);
-}
-
-void DatabaseManager::storeInMySQLRemoteBackupFolder(bool value)
-{
-    mysql_remote_backup = value;
-}
-
-void DatabaseManager::storeInPostgreSQLRemoteBackupFolder(bool value)
-{
-    postgreSQL_remote_backup = value;
-}

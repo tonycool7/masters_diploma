@@ -1,8 +1,13 @@
 #include "sshmanager.h"
 
+QString sshManager::host = "";
+QString sshManager::username = "";
+QString sshManager::password = "";
+
 sshManager::sshManager(QWidget *parent)
 {
     msg = new QMessageBox(this);
+    publicKeyAuth = false;
 }
 
 sshManager::~sshManager()
@@ -29,14 +34,18 @@ void sshManager::setSSHPassword(QString password_value)
 
 void sshManager::sendBackupToRemoteSSHServer(QString host, QString username, QString password)
 {
-    if(zip.Zipped()){
+    if(zip.Zipped("mySQLRemote")){
         QString filename="send.sh";
         QFile file(filename);
         QProcess *send = new QProcess();
         if(file.open(QIODevice::WriteOnly | QIODevice::Text)){
             QTextStream out(&file);
             out << "#!/bin/sh\n";
-            out << "sshpass -p"<<password<<" scp "+zip.returnAllBackups()+" "<<username<<"@"<<host<<":/backup/" ;
+            if(publicKeyAuth){
+                out << "scp "+zip.returnAllBackups("mySQLRemote")+" "<<username<<"@"<<host<<":/diplom/p2p/backup/" ;
+            }else{
+                out << "sshpass -p"<<password<<" scp "+zip.returnAllBackups("mySQLRemote")+" "<<username<<"@"<<host<<":/diplom/p2p/backup/" ;
+            }
             file.close();
         }
         send->start("/bin/sh" , QStringList() <<"send.sh");
@@ -80,17 +89,29 @@ bool sshManager::testSSHConnection(QString host, QString username, QString passw
     ssh_options_set(my_ssh_session, SSH_OPTIONS_LOG_VERBOSITY, &verbosity);
     ssh_options_set(my_ssh_session, SSH_OPTIONS_PORT, &port);
     rc = ssh_connect(my_ssh_session);
-    rc = ssh_userauth_password(my_ssh_session, NULL, password.toStdString().c_str());
-    if (rc != 0)
+    //rc = ssh_userauth_password(my_ssh_session, NULL, password.toStdString().c_str());
+    //int rc;
+    rc = ssh_userauth_autopubkey(my_ssh_session, "");
+    if (rc != SSH_AUTH_SUCCESS)
     {
-     QMessageBox::critical(this, tr("Testing connection to SSH server"),tr(ssh_get_error(my_ssh_session)), QMessageBox::Ok, QMessageBox::Ok);
-      ssh_disconnect(my_ssh_session);
-      return false;
+        rc = ssh_userauth_password(my_ssh_session, NULL,  password.toStdString().c_str());
+        if(rc == SSH_AUTH_ERROR){
+            QMessageBox::critical(this, tr("Testing connection to SSH server"),tr(ssh_get_error(my_ssh_session)), QMessageBox::Ok, QMessageBox::Ok);
+            ssh_disconnect(my_ssh_session);
+            return false;
+        }else{
+             publicKeyAuth = false;
+            QMessageBox::information(this, tr("Testing connection to SSH server"), tr("Connection successfull"), QMessageBox::Ok, QMessageBox::Ok);
+            ssh_disconnect(my_ssh_session);
+            return true;
+        }
     }else{
-      QMessageBox::information(this, tr("Testing connection to SSH server"), tr("Connection successfull"), QMessageBox::Ok, QMessageBox::Ok);
-      ssh_disconnect(my_ssh_session);
-      return true;
+        publicKeyAuth = true;
+        QMessageBox::information(this, tr("Testing connection to SSH server"), tr("Connection successfull"), QMessageBox::Ok, QMessageBox::Ok);
+        ssh_disconnect(my_ssh_session);
+        return true;
     }
+
 }
 
 QString sshManager::getSSHHost()

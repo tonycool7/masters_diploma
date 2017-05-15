@@ -4,7 +4,6 @@
 #include <QMainWindow>
 #include "mysqlsettings.h"
 #include "postgresqlsettings.h"
-#include "databasemanager.h"
 
 namespace Ui {
 class MainWindow;
