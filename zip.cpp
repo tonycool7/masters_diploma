@@ -15,6 +15,7 @@ bool Zip::Zipped(QString folder)
         QTextStream out(&file);
         out << "#!/bin/sh\n";
         out << "zip "+folder+"/backup_"+QDate::currentDate().toString("MM_dd_yyyy")+"+"+QDateTime::currentDateTime().toString("hh:mm:ss")+".zip"+returnAllFiles(folder);
+        out << "\nchmod -R 777 "+folder+"/backup_"+QDate::currentDate().toString("MM_dd_yyyy")+"+"+QDateTime::currentDateTime().toString("hh:mm:ss")+".zip";
         file.close();
     }
     int result = zip->execute("/bin/sh" , QStringList() <<"zipper.sh");

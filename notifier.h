@@ -11,8 +11,6 @@
 #include <QDebug>
 #include <arpa/inet.h>
 
-struct addrinfo hints, *res;
-
 class notifier
 {
 public:
@@ -20,7 +18,10 @@ public:
     notifier(QString ip);
     bool sendNotification();
     bool createSocket();
+    void setSocketId(int socket);
+    int getSocketId();
     bool connectToBackupServer(QString ip);
+    struct addrinfo hints, *res;
 
     ~notifier();
 
@@ -31,7 +32,6 @@ private:
     int status;
     int socket_id;
     QString backupServerIp;
-    char buffer[256];
     char *request_code;
 
 public slots:

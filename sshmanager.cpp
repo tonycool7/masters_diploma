@@ -54,9 +54,8 @@ void sshManager::sendBackupToRemoteSSHServer(QString host, QString username, QSt
         send->close();
         deleteAllSQLFiles(folder);
         if(notify->connectToBackupServer(host)){
-            if(notify->createSocket())
-                if(notify->sendNotification())
-                    qDebug() << "sent";
+            if(notify->sendNotification())
+                qDebug() << "sent";
         }
     }else{
         qDebug() << "zip error";
