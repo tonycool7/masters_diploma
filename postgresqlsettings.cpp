@@ -12,7 +12,7 @@ postgresqlSettings::postgresqlSettings(QWidget *parent) :
     }
 
     DatabaseManager *db = new PostgreSQLDatabaseManager();
-    ssh = new sshManager();
+    ssh = sshManager::getSSHManager();
 
     connect(this, SIGNAL(storeInMySQLRemoteBackupFolder(bool)), db, SLOT(storeInRemoteBackupFolder(bool)));
 

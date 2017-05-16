@@ -11,7 +11,7 @@ mysqlSettings::mysqlSettings(QWidget *parent) :
         ui->mysql_timetable_tabwidget->setTabEnabled(i, false);
     }
     DatabaseManager *db = new MysqlDatabaseManager();
-    ssh = new sshManager();
+    ssh = sshManager::getSSHManager();
 
     connect(ui->loadDefualt, SIGNAL(clicked()), this, SLOT(loadMySQLDefault()));
     connect(ui->loadSSHDefault, SIGNAL(clicked()), this, SLOT(loadSSHDefault()));

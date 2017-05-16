@@ -2,7 +2,7 @@
 
 PostgreSQLDatabaseManager::PostgreSQLDatabaseManager()
 {
-    ssh = new sshManager();
+    ssh = sshManager::getSSHManager();
 }
 
 PostgreSQLDatabaseManager::~PostgreSQLDatabaseManager()

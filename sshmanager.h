@@ -25,11 +25,11 @@ public:
     void setSSHPassword(QString password_value);
     void sendBackupToRemoteSSHServer(QString host,QString username ,QString password, QString folder);
     void deleteAllSQLFiles(QString folder);
+    static sshManager* getSSHManager();
     QString getSSHHost();
     QString getSSHUsername();
     QString getSSPassword();
     Zip zip;
-    notifier* notify;
     static QString host;
     static QString username;
     static QString password;
@@ -37,6 +37,8 @@ public:
 private:
     QMessageBox *msg;
     bool publicKeyAuth;
+    notifier* notify;
+    static sshManager *sshInstance;
 
 public slots:
     bool testSSHConnection(QString host,QString username ,QString password);

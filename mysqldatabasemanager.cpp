@@ -2,7 +2,7 @@
 
 MysqlDatabaseManager::MysqlDatabaseManager()
 {
-    ssh = new sshManager();
+    ssh = sshManager::getSSHManager();
 }
 
 MysqlDatabaseManager::~MysqlDatabaseManager()

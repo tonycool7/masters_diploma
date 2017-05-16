@@ -3,12 +3,16 @@
 QString sshManager::host = "";
 QString sshManager::username = "";
 QString sshManager::password = "";
+sshManager *sshManager::sshInstance = 0;
 
 sshManager::sshManager(QWidget *parent)
 {
     msg = new QMessageBox(this);
     publicKeyAuth = false;
-    notify = new notifier();
+    if(notify == NULL){
+        notify = new notifier();
+        notify->connectToBackupSystem("192.168.1.194");
+    }
 }
 
 sshManager::~sshManager()
@@ -53,10 +57,7 @@ void sshManager::sendBackupToRemoteSSHServer(QString host, QString username, QSt
         send->waitForFinished();
         send->close();
         deleteAllSQLFiles(folder);
-        if(notify->connectToBackupServer(host)){
-            if(notify->sendNotification())
-                qDebug() << "sent";
-        }
+        notify->sendNotification();
     }else{
         qDebug() << "zip error";
     }
@@ -78,6 +79,15 @@ void sshManager::deleteAllSQLFiles(QString folder)
     deleteSQLFiles->close();
 }
 
+sshManager *sshManager::getSSHManager()
+{
+    if(!sshInstance){
+        sshInstance = new sshManager();
+    }
+    return sshInstance;
+}
+
+
 bool sshManager::testSSHConnection(QString host, QString username, QString password)
 {
     ssh_session my_ssh_session;
@@ -96,7 +106,7 @@ bool sshManager::testSSHConnection(QString host, QString username, QString passw
     //rc = ssh_userauth_password(my_ssh_session, NULL, password.toStdString().c_str());
     //int rc;
     rc = ssh_userauth_autopubkey(my_ssh_session, "");
-    if (rc != SSH_AUTH_SUCCESS)
+    if (rc == SSH_AUTH_ERROR)
     {
         rc = ssh_userauth_password(my_ssh_session, NULL,  password.toStdString().c_str());
         if(rc == SSH_AUTH_ERROR){

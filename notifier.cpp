@@ -1,81 +1,40 @@
 #include "notifier.h"
 
-notifier::notifier()
+notifier::notifier(QObject *parent) : QObject(parent)
 {
-    memset(&hints, 0, sizeof hints);
-    hints.ai_family = AF_UNSPEC;
-    hints.ai_socktype = SOCK_STREAM;
-    hints.ai_flags = AI_PASSIVE;
+
 }
 
-bool notifier::sendNotification()
+void notifier::sendNotification()
 {
-    char buffer[256];
-    request_code = "103";
-    status = write(getSocketId(),request_code, sizeof(request_code));
-    if (status < 0)
-        qDebug() << "sending error";
-        return false;
-
-    bzero(buffer,256);
-    status = read(getSocketId(),buffer,255);
-    if (status < 0)
-        qDebug() << "sending error";
-        return false;
-
-    qDebug() << buffer;
-    close(getSocketId());
-    return true;
+    byte.append("103");
+    socket->write(byte);
+    byte.clear();
+    socket->flush();
 }
 
-bool notifier::createSocket()
+void notifier::receiveConfirmation()
 {
-    int id;
-    id = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
-    if(id < 0)
-    {
-        qDebug() << "socket error";
-        return false;
-    }
-    setSocketId(id);
-    return true;
+    QByteArray data = socket->readAll();
+    qDebug() << data;
 }
 
-void notifier::setSocketId(int socket)
+void notifier::connectToBackupSystem(QString ip)
 {
-    socket_id = socket;
-}
+    socket = new QTcpSocket;
+    socket->connectToHost(ip,81);
 
-int notifier::getSocketId()
-{
-    return socket_id;
-}
-
-bool notifier::connectToBackupServer(QString ip)
-{
-    status = getaddrinfo("192.168.1.194", "81", &hints, &res);
-    if(status != 0)
-    {
-        qDebug() << "connect error 1";
-        return false;
-    }
-    if(createSocket() < 0){
-        return false;
-    }
-
-    if(createSocket()){
-        status = connect(getSocketId(), res->ai_addr, res->ai_addrlen);
-        if(status < 0)
-        {
-            qDebug() << "connect error 2";
-            return false;
-        }
-    }
-
-    return true;
+    QObject::connect(socket,SIGNAL(connected()),this,SLOT(success()));
+    QObject::connect(socket,SIGNAL(readyRead()),this,SLOT(receiveConfirmation()));
 }
 
 notifier::~notifier()
 {
-    close(socket_id);
+
 }
+
+void notifier::success()
+{
+    qDebug() << "successfully connected";
+}
+
