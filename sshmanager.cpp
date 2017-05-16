@@ -3,16 +3,14 @@
 QString sshManager::host = "";
 QString sshManager::username = "";
 QString sshManager::password = "";
-sshManager *sshManager::sshInstance = 0;
+sshManager *sshManager::sshInstance = NULL;
 
 sshManager::sshManager(QWidget *parent)
 {
     msg = new QMessageBox(this);
     publicKeyAuth = false;
-    if(notify == NULL){
-        notify = new notifier();
-        notify->connectToBackupSystem("192.168.1.194");
-    }
+    notify = new notifier();
+    notify->connectToBackupSystem("192.168.1.194");
 }
 
 sshManager::~sshManager()
