@@ -14,7 +14,8 @@ MainWindow::MainWindow(QWidget *parent) :
     setFixedSize(532, 515);
     move(QPoint(400, 50));
 
-    connect(ui->manual_mysql, SIGNAL(clicked()), m, SLOT(show()));
+    connect(ui->mysql_next, SIGNAL(clicked()), m, SLOT(show()));
+    connect(ui->postgre_next, SIGNAL(clicked()), p, SLOT(show()));
 }
 
 MainWindow::~MainWindow()

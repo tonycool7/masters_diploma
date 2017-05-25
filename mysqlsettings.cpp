@@ -14,6 +14,9 @@ mysqlSettings::mysqlSettings(QWidget *parent) :
 
     connect(ui->loadDefualt, SIGNAL(clicked()), this, SLOT(loadMySQLDefault()));
 
+    connect(ui->mysql_ok_btn, SIGNAL(clicked()), this, SLOT(tryingToConnect()));
+    connect(this, SIGNAL(sendParameters(QString,QString,QString)), db, SLOT(connectToServer(QString ,QString ,QString )));
+
     connect(ui->mysql_dynamic_naming, SIGNAL(toggled(bool)), ui->mysql_configuration_name, SLOT(setDisabled(bool)));
 
     connect(ui->mysql_cancel_btn, SIGNAL(clicked()), this, SLOT(close()));
