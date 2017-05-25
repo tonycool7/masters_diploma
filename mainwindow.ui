@@ -37,7 +37,7 @@
       <property name="title">
        <string>Управление системы резервного копирования</string>
       </property>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -65,7 +65,7 @@
             <string>Далее</string>
            </property>
           </widget>
-          <widget class="QWidget" name="">
+          <widget class="QWidget" name="layoutWidget">
            <property name="geometry">
             <rect>
              <x>20</x>
@@ -77,8 +77,14 @@
            <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
              <widget class="QRadioButton" name="manual_mysql">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
               <property name="text">
                <string>Ручной бекап</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -119,6 +125,9 @@
              <widget class="QRadioButton" name="manual_postgre">
               <property name="text">
                <string>Ручной бекап</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
               </property>
              </widget>
             </item>

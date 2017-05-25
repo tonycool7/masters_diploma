@@ -7,12 +7,15 @@ mysqlSettings::mysqlSettings(QWidget *parent) :
 {
     ui->setupUi(this);
     setFixedSize(841, 550);
-    for(int i = 0; i < 4; i++){
-        ui->mysql_timetable_tabwidget->setTabEnabled(i, false);
-    }
+
     DatabaseManager *db = new MysqlDatabaseManager();
 
     connect(ui->loadDefualt, SIGNAL(clicked()), this, SLOT(loadMySQLDefault()));
+
+//    connect(ui->daily_my, SIGNAL(toggled(bool)), this, SLOT(setDaily(bool)));
+//    connect(ui->weekly_my, SIGNAL(toggled(bool)), this, SLOT(setWeekly(bool)));
+//    connect(ui->monthly_my, SIGNAL(toggled(bool)), this, SLOT(setMonthly(bool)));
+//    connect(ui->yearly_my, SIGNAL(toggled(bool)), this, SLOT(setYearly(bool)));
 
     connect(ui->mysql_ok_btn, SIGNAL(clicked()), this, SLOT(tryingToConnect()));
     connect(this, SIGNAL(sendParameters(QString,QString,QString)), db, SLOT(connectToServer(QString ,QString ,QString )));
@@ -80,12 +83,6 @@ void mysqlSettings::testingConnection()
     emit testingParameters(getHost(), getUsername(), getPassword());
 }
 
-
-void mysqlSettings::enableRemoteAutomaticBackup(bool value)
-{
-    ui->mysql_timetable_tabwidget->setEnabled(value);
-}
-
 void mysqlSettings::loadMySQLDefault()
 {
     ui->mysql_host->setText("192.168.1.224");
@@ -93,8 +90,38 @@ void mysqlSettings::loadMySQLDefault()
     ui->mysql_password->setText("dlords");
 }
 
-void mysqlSettings::enableRemoteManaulBackup(bool value)
+void mysqlSettings::tryingToConnect()
+{
+    setHost(ui->mysql_host->text());
+    setUsername(ui->mysql_username->text());
+    setPassword(ui->mysql_password->text());
+    emit sendParameters(getHost(), getUsername(), getPassword());
+}
+
+void mysqlSettings::showDomainField(bool value)
 {
     ui->mysql_destination_details->setEnabled(value);
-    emit storeInMySQLRemoteBackupFolder(value);
+    ui->mysql_timetable->setEnabled(value);
+    ui->mysql_timetable_tabwidget->setEnabled(value);
 }
+
+void mysqlSettings::setDaily(bool value)
+{
+    ui->mysql_timetable_tabwidget->setTabEnabled(0, value);
+}
+
+void mysqlSettings::setMonthly(bool value)
+{
+    ui->mysql_timetable_tabwidget->setTabEnabled(2, value);
+}
+
+void mysqlSettings::setWeekly(bool value)
+{
+    ui->mysql_timetable_tabwidget->setTabEnabled(1, value);
+}
+
+void mysqlSettings::setYearly(bool value)
+{
+    ui->mysql_timetable_tabwidget->setTabEnabled(3, value);
+}
+

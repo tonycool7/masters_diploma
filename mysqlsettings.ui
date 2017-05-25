@@ -841,28 +841,28 @@
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_12">
          <item>
-          <widget class="QRadioButton" name="radioButton_2">
+          <widget class="QRadioButton" name="daily_my">
            <property name="text">
             <string>Daily</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton_3">
+          <widget class="QRadioButton" name="weekly_my">
            <property name="text">
             <string>Weekly</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton_4">
+          <widget class="QRadioButton" name="monthly_my">
            <property name="text">
             <string>monthly</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton_5">
+          <widget class="QRadioButton" name="yearly_my">
            <property name="text">
             <string>Yearly</string>
            </property>
@@ -923,10 +923,10 @@
   <tabstop>mysql_password</tabstop>
   <tabstop>mysql_test_connection_btn</tabstop>
   <tabstop>mysql_backup_ip</tabstop>
-  <tabstop>radioButton_2</tabstop>
-  <tabstop>radioButton_3</tabstop>
-  <tabstop>radioButton_4</tabstop>
-  <tabstop>radioButton_5</tabstop>
+  <tabstop>daily_my</tabstop>
+  <tabstop>weekly_my</tabstop>
+  <tabstop>monthly_my</tabstop>
+  <tabstop>yearly_my</tabstop>
   <tabstop>mysql_timetable_tabwidget</tabstop>
   <tabstop>timeEdit</tabstop>
   <tabstop>comboBox_4</tabstop>

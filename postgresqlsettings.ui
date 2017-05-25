@@ -823,28 +823,28 @@
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_16">
          <item>
-          <widget class="QRadioButton" name="radioButton_6">
+          <widget class="QRadioButton" name="daily_pos">
            <property name="text">
             <string>Daily</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton_7">
+          <widget class="QRadioButton" name="weekly_pos">
            <property name="text">
             <string>Weekly</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton_8">
+          <widget class="QRadioButton" name="monthly_pos">
            <property name="text">
             <string>monthly</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton_9">
+          <widget class="QRadioButton" name="yearly_pos">
            <property name="text">
             <string>Yearly</string>
            </property>
@@ -864,7 +864,7 @@
         <bool>true</bool>
        </property>
        <property name="text">
-        <string>Connect</string>
+        <string>Подключить</string>
        </property>
        <property name="default">
         <bool>true</bool>
@@ -905,10 +905,10 @@
   <tabstop>postgre_password</tabstop>
   <tabstop>postgre_test_connection_btn</tabstop>
   <tabstop>postgre_backup_ip</tabstop>
-  <tabstop>radioButton_6</tabstop>
-  <tabstop>radioButton_7</tabstop>
-  <tabstop>radioButton_8</tabstop>
-  <tabstop>radioButton_9</tabstop>
+  <tabstop>daily_pos</tabstop>
+  <tabstop>weekly_pos</tabstop>
+  <tabstop>monthly_pos</tabstop>
+  <tabstop>yearly_pos</tabstop>
   <tabstop>postgre_timetable_tabwidget</tabstop>
   <tabstop>timeEdit_5</tabstop>
   <tabstop>comboBox_5</tabstop>

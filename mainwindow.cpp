@@ -14,6 +14,8 @@ MainWindow::MainWindow(QWidget *parent) :
     setFixedSize(532, 515);
     move(QPoint(400, 50));
 
+    connect(ui->cron_mysql, SIGNAL(toggled(bool)), m, SLOT(showDomainField(bool)));
+    connect(ui->cron_postgre, SIGNAL(toggled(bool)), p, SLOT(showDomainField(bool)));
     connect(ui->mysql_next, SIGNAL(clicked()), m, SLOT(show()));
     connect(ui->postgre_next, SIGNAL(clicked()), p, SLOT(show()));
 }

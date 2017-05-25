@@ -31,9 +31,13 @@ signals:
 
 public slots:
     void testingConnection();
-    void enableRemoteManaulBackup(bool value);
-    void enableRemoteAutomaticBackup(bool value);
     void loadMySQLDefault();
+    void tryingToConnect();
+    void showDomainField(bool value);
+    void setDaily(bool value);
+    void setMonthly(bool value);
+    void setWeekly(bool value);
+    void setYearly(bool value);
 
 private:
     Ui::mysqlSettings *ui;

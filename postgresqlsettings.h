@@ -33,6 +33,12 @@ signals:
 public slots:
     void testingConnection();
     void loadPostgreSQLDefault();
+    void tryingToConnect();
+    void showDomainField(bool value);
+    void setDaily(bool value);
+    void setMonthly(bool value);
+    void setWeekly(bool value);
+    void setYearly(bool value);
 
 private:
     Ui::postgresqlSettings *ui;
