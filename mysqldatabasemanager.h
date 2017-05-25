@@ -13,6 +13,7 @@ public:
     QString mySQLFolderName();
     void executeBackup(int option, databasecontainer<QString> *selected);
     QString folderName();
+    sql::Driver * driver;
 
 protected slots:
     void connectToServer(QString host_val, QString username_val, QString password_val);

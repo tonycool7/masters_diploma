@@ -2,7 +2,7 @@
 
 MysqlDatabaseManager::MysqlDatabaseManager()
 {
-    ssh = sshManager::getSSHManager();
+    driver = sql::mysql::get_driver_instance();
 }
 
 MysqlDatabaseManager::~MysqlDatabaseManager()

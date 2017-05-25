@@ -22,7 +22,9 @@ SOURCES += main.cpp\
     zip.cpp \
     mysqldatabasemanager.cpp \
     postgresqldatabasemanager.cpp \
-    notifier.cpp
+    notifier.cpp \
+    log.cpp \
+    cronjob.cpp
 
 HEADERS  += mainwindow.h \
     mysqlsettings.h \
@@ -34,7 +36,9 @@ HEADERS  += mainwindow.h \
     zip.h \
     mysqldatabasemanager.h \
     postgresqldatabasemanager.h \
-    notifier.h
+    notifier.h \
+    log.h \
+    cronjob.h
 
 FORMS    += mainwindow.ui \
     mysqlsettings.ui \

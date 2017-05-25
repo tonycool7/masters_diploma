@@ -8,8 +8,8 @@ DatabaseManager::DatabaseManager(QWidget *parent) :
     ui->setupUi(this);
     StandardModel = new QStandardItemModel;
     StandardModel2 = new QStandardItemModel;
-    driver = sql::mysql::get_driver_instance();
     msg = new QMessageBox(this);
+    ssh = sshManager::getSSHManager();
 
     connect(ui->databaseView, SIGNAL(clicked(QModelIndex)), this, SLOT(displayDatabaseSelections(QModelIndex)));
     connect(ui->backup_btn, SIGNAL(clicked()), this, SLOT(backupDatabases()));

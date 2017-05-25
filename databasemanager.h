@@ -17,7 +17,6 @@
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
 #include "databasecontainer.h"
-//#include "mainwindow.h"
 #include <signal.h>
 #include <pqxx/pqxx>
 #include <QFile>
@@ -55,7 +54,6 @@ public:
 
 protected:
     Ui::DatabaseManager *ui;
-    sql::Driver * driver;
     QStandardItemModel *StandardModel;
     QStandardItem *ContainerRootNode;
     QStandardItemModel *StandardModel2;

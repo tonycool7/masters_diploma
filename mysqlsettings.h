@@ -43,7 +43,6 @@ public slots:
 
 private:
     Ui::mysqlSettings *ui;
-    QMessageBox *msg;
     sshManager *ssh;
     QString username;
     QString password;
