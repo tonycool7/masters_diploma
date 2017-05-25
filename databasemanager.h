@@ -25,7 +25,6 @@
 #include <QDir>
 #include <QDateTime>
 #include <QDate>
-#include "sshmanager.h"
 
 using namespace std;
 
@@ -48,8 +47,6 @@ public:
     QString getPassword();
     QString getHost();
     QStringList databaseList;
-    virtual QString folderName() = 0;
-    virtual void executeBackup(int option, databasecontainer<QString> *selected) = 0;
     QString convertVectorToString(QVector<QString> data);
 
 protected:
@@ -64,15 +61,11 @@ protected:
     QString host;
     QString password;
     QString username;
-    bool remote_backup;
-    sshManager *ssh;
 
 protected slots:
     virtual void connectToServer(QString host_val, QString username_val, QString password_val) = 0;
     virtual void testConnection(QString host_val, QString username_val, QString password_val) = 0;
     void displayDatabaseSelections(const QModelIndex &index);
-    virtual void backupDatabases() = 0;
-    virtual void storeInRemoteBackupFolder(bool value) = 0;
 
 };
 

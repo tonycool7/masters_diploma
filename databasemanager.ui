@@ -26,7 +26,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Select database resources you will like to backup</string>
+    <string>Выберите базы данных или таблицы, которые вы хотите резервировать</string>
    </property>
   </widget>
   <widget class="QWidget" name="layoutWidget">
@@ -73,7 +73,7 @@
     <item>
      <widget class="QPushButton" name="backup_btn">
       <property name="text">
-       <string>BACKUP</string>
+       <string>Бекапить</string>
       </property>
      </widget>
     </item>

@@ -18,8 +18,6 @@ SOURCES += main.cpp\
     mysqlsettings.cpp \
     postgresqlsettings.cpp \
     databasemanager.cpp \
-    sshmanager.cpp \
-    zip.cpp \
     mysqldatabasemanager.cpp \
     postgresqldatabasemanager.cpp \
     notifier.cpp \
@@ -32,8 +30,6 @@ HEADERS  += mainwindow.h \
     node.h \
     databasemanager.h \
     databasecontainer.h \
-    sshmanager.h \
-    zip.h \
     mysqldatabasemanager.h \
     postgresqldatabasemanager.h \
     notifier.h \

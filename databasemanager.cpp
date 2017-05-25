@@ -9,15 +9,12 @@ DatabaseManager::DatabaseManager(QWidget *parent) :
     StandardModel = new QStandardItemModel;
     StandardModel2 = new QStandardItemModel;
     msg = new QMessageBox(this);
-    ssh = sshManager::getSSHManager();
 
     connect(ui->databaseView, SIGNAL(clicked(QModelIndex)), this, SLOT(displayDatabaseSelections(QModelIndex)));
-    connect(ui->backup_btn, SIGNAL(clicked()), this, SLOT(backupDatabases()));
 
     ui->databaseView->setModel(StandardModel);
     ui->seletedView->setModel(StandardModel2);
 
-    remote_backup = false;
 }
 
 DatabaseManager::~DatabaseManager()

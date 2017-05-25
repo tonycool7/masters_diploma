@@ -30,7 +30,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Configuration name </string>
+        <string>Название конфигурации</string>
        </property>
       </widget>
      </item>
@@ -66,9 +66,12 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
+     <property name="tabBarAutoHide">
+      <bool>false</bool>
+     </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
-       <string>General</string>
+       <string>Общий</string>
       </attribute>
       <widget class="QGroupBox" name="groupBox">
        <property name="geometry">
@@ -80,7 +83,7 @@
         </rect>
        </property>
        <property name="title">
-        <string>From (MySQL Server)</string>
+        <string>Сервер MySQL</string>
        </property>
        <widget class="QLabel" name="label_7">
         <property name="geometry">
@@ -118,7 +121,7 @@
          <rect>
           <x>10</x>
           <y>80</y>
-          <width>81</width>
+          <width>125</width>
           <height>19</height>
          </rect>
         </property>
@@ -186,7 +189,7 @@
          <item>
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>Host</string>
+            <string>IP</string>
            </property>
           </widget>
          </item>
@@ -286,7 +289,7 @@
          <item>
           <widget class="QPushButton" name="mysql_test_connection_btn">
            <property name="text">
-            <string>Test Connection</string>
+            <string>Проверка</string>
            </property>
           </widget>
          </item>
@@ -334,25 +337,12 @@
          <x>420</x>
          <y>10</y>
          <width>371</width>
-         <height>211</height>
+         <height>71</height>
         </rect>
        </property>
        <property name="title">
-        <string>Destination (SSH Server)</string>
+        <string>Куда (Домен)</string>
        </property>
-       <widget class="QLabel" name="label_10">
-        <property name="geometry">
-         <rect>
-          <x>280</x>
-          <y>34</y>
-          <width>31</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Port</string>
-        </property>
-       </widget>
        <widget class="QLineEdit" name="mysql_backup_ip">
         <property name="geometry">
          <rect>
@@ -376,7 +366,7 @@
          <item>
           <widget class="QLabel" name="label_13">
            <property name="text">
-            <string>IP Address</string>
+            <string>Домен</string>
            </property>
           </widget>
          </item>
@@ -394,16 +384,6 @@
           </spacer>
          </item>
         </layout>
-       </widget>
-       <widget class="QLineEdit" name="mysql_port_2">
-        <property name="geometry">
-         <rect>
-          <x>310</x>
-          <y>31</y>
-          <width>51</width>
-          <height>22</height>
-         </rect>
-        </property>
        </widget>
        <widget class="QLabel" name="label_14">
         <property name="geometry">
@@ -423,165 +403,6 @@
          <string>Backup server IP address</string>
         </property>
        </widget>
-       <widget class="QWidget" name="layoutWidget_7">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>173</y>
-          <width>351</width>
-          <height>24</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_9">
-         <item>
-          <widget class="QPushButton" name="loadSSHDefault">
-           <property name="text">
-            <string>Load Default</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_8">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>198</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QPushButton" name="mysql_ssh_testConnection_btn">
-           <property name="text">
-            <string>Test Connection</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QLineEdit" name="mysql_backup_username">
-        <property name="geometry">
-         <rect>
-          <x>100</x>
-          <y>80</y>
-          <width>171</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="mysql_backup_password">
-        <property name="geometry">
-         <rect>
-          <x>100</x>
-          <y>130</y>
-          <width>171</width>
-          <height>22</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_23">
-        <property name="geometry">
-         <rect>
-          <x>100</x>
-          <y>100</y>
-          <width>231</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>8</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Backup server/SSH server username</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_24">
-        <property name="geometry">
-         <rect>
-          <x>100</x>
-          <y>150</y>
-          <width>231</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>8</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Backup server/SSH server password</string>
-        </property>
-       </widget>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>80</y>
-          <width>83</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_13">
-         <item>
-          <widget class="QLabel" name="label_21">
-           <property name="text">
-            <string>Username</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_6">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>13</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>130</y>
-          <width>78</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_14">
-         <item>
-          <widget class="QLabel" name="label_22">
-           <property name="text">
-            <string>Password</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_9">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>13</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </widget>
       </widget>
       <widget class="QGroupBox" name="mysql_timetable">
        <property name="enabled">
@@ -596,7 +417,7 @@
         </rect>
        </property>
        <property name="title">
-        <string>Timetable</string>
+        <string>Расписание</string>
        </property>
        <widget class="QTabWidget" name="mysql_timetable_tabwidget">
         <property name="enabled">
@@ -1061,7 +882,7 @@
         <bool>true</bool>
        </property>
        <property name="text">
-        <string>Connect</string>
+        <string>Подключить</string>
        </property>
        <property name="default">
         <bool>true</bool>
@@ -1102,10 +923,6 @@
   <tabstop>mysql_password</tabstop>
   <tabstop>mysql_test_connection_btn</tabstop>
   <tabstop>mysql_backup_ip</tabstop>
-  <tabstop>mysql_port_2</tabstop>
-  <tabstop>mysql_backup_username</tabstop>
-  <tabstop>mysql_backup_password</tabstop>
-  <tabstop>mysql_ssh_testConnection_btn</tabstop>
   <tabstop>radioButton_2</tabstop>
   <tabstop>radioButton_3</tabstop>
   <tabstop>radioButton_4</tabstop>

@@ -2,7 +2,6 @@
 #define POSTGRESQLSETTINGS_H
 
 #include <QDialog>
-#include "sshmanager.h"
 #include "postgresqldatabasemanager.h"
 
 
@@ -29,21 +28,14 @@ public:
 signals:
     void sendParameters(QString, QString, QString);
     void testingParameters(QString, QString, QString);
-    void sendSSHParameters(QString, QString, QString);
     void storeInMySQLRemoteBackupFolder(bool);
 
 public slots:
     void testingConnection();
     void loadPostgreSQLDefault();
-    void loadSSHDefault();
-    void tryingToConnect();
-    void enableRemoteManaulBackup(bool value);
-    void enableRemoteAutomaticBackup(bool value);
-    void emitSSHConnectionSignal();
 
 private:
     Ui::postgresqlSettings *ui;
-    sshManager *ssh;
     QString username;
     QString password;
     QString configFilename;
