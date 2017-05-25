@@ -38,7 +38,8 @@ HEADERS  += mainwindow.h \
     postgresqldatabasemanager.h \
     notifier.h \
     log.h \
-    cronjob.h
+    cronjob.h \
+    zip.h
 
 FORMS    += mainwindow.ui \
     mysqlsettings.ui \
